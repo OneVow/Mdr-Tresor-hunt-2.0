@@ -6,50 +6,49 @@
 <title>Treasure Hunt</title>
 
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(180deg, #0f172a, #1e293b);
-    color: white;
-    text-align: center;
-    padding: 20px;
-  }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #0f172a, #1e293b);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
 
-  h1 { font-size: 1.8em; margin-bottom: 30px; }
+h1 { font-size: 1.8em; margin-bottom: 30px; }
 
-  .input-box { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-  input { padding: 14px; font-size: 16px; border-radius: 12px; border: none; width: 60%; max-width: 250px; }
-  button { padding: 14px 20px; font-size: 16px; border-radius: 12px; border: none; cursor: pointer; transition: transform 0.2s; }
-  button:hover { transform: scale(1.05); }
+.input-box { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+input { padding: 14px; font-size: 16px; border-radius: 12px; border: none; width: 60%; max-width: 250px; }
+button { padding: 14px 20px; font-size: 16px; border-radius: 12px; border: none; cursor: pointer; transition: transform 0.2s; }
+button:hover { transform: scale(1.05); }
 
-  .card {
-    background: #1e293b;
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 15px;
-    display: none;
-    animation: fadeIn 0.5s ease;
-  }
+.card {
+  background: #1e293b;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
 
-  img { width: 100%; border-radius: 10px; margin-top: 10px; }
-  .success { color: #22c55e; margin-top: 15px; animation: pop 0.3s ease; }
-  .error { color: #ef4444; margin-top: 15px; animation: shake 0.3s ease; }
+img { width: 100%; border-radius: 10px; margin-top: 10px; }
+.success { color: #22c55e; margin-top: 15px; animation: pop 0.3s ease; }
+.error { color: #ef4444; margin-top: 15px; animation: shake 0.3s ease; }
 
-  @keyframes fadeIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
-  @keyframes pop { 0%{transform:scale(0.8);} 100%{transform:scale(1);} }
-  @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 50%{transform:translateX(5px);} 75%{transform:translateX(-5px);} }
+@keyframes fadeIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
+@keyframes pop { 0%{transform:scale(0.8);} 100%{transform:scale(1);} }
+@keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 50%{transform:translateX(5px);} 75%{transform:translateX(-5px);} }
 
-  .lang-buttons { margin-top: 20px; display: flex; justify-content: center; gap: 10px; }
-  .lang-buttons button { font-size: 14px; padding: 10px 16px; border-radius: 8px; }
+.lang-buttons { margin-top: 20px; display: flex; justify-content: center; gap: 10px; }
+.lang-buttons button { font-size: 14px; padding: 10px 16px; border-radius: 8px; }
 
-  /* Styles individuels pour chaque langue */
-  #btn-en { background-color: #3b82f6; color: white; }
-  #btn-hr { background-color: #f97316; color: white; }
-  #btn-me { background-color: #10b981; color: white; }
+#btn-en { background-color: #3b82f6; color: white; }
+#btn-hr { background-color: #f97316; color: white; }
+#btn-me { background-color: #10b981; color: white; }
 
-  #btn-en:hover { background-color: #2563eb; }
-  #btn-hr:hover { background-color: #ea580c; }
-  #btn-me:hover { background-color: #059669; }
+#btn-en:hover { background-color: #2563eb; }
+#btn-hr:hover { background-color: #ea580c; }
+#btn-me:hover { background-color: #059669; }
 </style>
 </head>
 <body>
@@ -64,29 +63,40 @@
 <p id="hint" style="margin-top:10px; font-size:14px; color:#cbd5f5;">Enter the code with only the first letter capitalized.</p>
 <div id="message"></div>
 
+<!-- Step 1 Zoomable -->
 <div id="step1" class="card">
   <h2 id="step1Title">📍 Step 1</h2>
   <p id="step1Coords">48.8584, 2.2945</p>
-  <img id="step1Img" src="https://via.placeholder.com/400x200">
+  <div id="mapContainer1" style="width:400px; height:200px; overflow:hidden; border-radius:10px; margin:auto;">
+    <img id="mapImage1" src="images/step1-map.jpg" style="width:100%; cursor:grab;">
+  </div>
 </div>
 
+<!-- Step 2 Zoomable -->
 <div id="step2" class="card">
   <h2 id="step2Title">📍 Step 2</h2>
   <p id="step2Coords">43.2965, 5.3698</p>
-  <img id="step2Img" src="https://via.placeholder.com/400x200">
+  <div id="mapContainer2" style="width:400px; height:200px; overflow:hidden; border-radius:10px; margin:auto;">
+    <img id="mapImage2" src="images/step2-map.jpg" style="width:100%; cursor:grab;">
+  </div>
 </div>
 
+<!-- Step 3 Normal -->
 <div id="step3" class="card">
   <h2 id="step3Title">🏁 Final Step</h2>
   <p id="step3Coords">45.7640, 4.8357</p>
-  <img id="step3Img" src="https://via.placeholder.com/400x200">
+  <img id="step3Img" src="https://via.placeholder.com/400x200" style="border-radius:10px;">
 </div>
 
+<!-- Language buttons -->
 <div class="lang-buttons">
   <button id="btn-en" onclick="setLanguage('en')">English</button>
   <button id="btn-hr" onclick="setLanguage('hr')">Croatian</button>
-  <button id="btn-me" onclick="setLanguage('me')">Montenegrin</button>
+  <button id="btn-me" onclick="setLanguage('me')">Montenegro</button>
 </div>
+
+<!-- Panzoom library -->
+<script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
 
 <script>
 const data = {
@@ -101,8 +111,8 @@ const data = {
       step3: "🏆 Congratulations! You finished the game!"
     },
     steps: {
-      step1: { title: "📍 Step 1", coords: "48.8584, 2.2945", img: "https://via.placeholder.com/400x200" },
-      step2: { title: "📍 Step 2", coords: "43.2965, 5.3698", img: "https://via.placeholder.com/400x200" },
+      step1: { title: "📍 Step 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" },
+      step2: { title: "📍 Step 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" },
       step3: { title: "🏁 Final Step", coords: "45.7640, 4.8357", img: "https://via.placeholder.com/400x200" }
     }
   },
@@ -117,8 +127,8 @@ const data = {
       step3: "🏆 Čestitamo! Završili ste igru!"
     },
     steps: {
-      step1: { title: "📍 Korak 1", coords: "48.8584, 2.2945", img: "https://via.placeholder.com/400x200" },
-      step2: { title: "📍 Korak 2", coords: "43.2965, 5.3698", img: "https://via.placeholder.com/400x200" },
+      step1: { title: "📍 Korak 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" },
+      step2: { title: "📍 Korak 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" },
       step3: { title: "🏁 Završni korak", coords: "45.7640, 4.8357", img: "https://via.placeholder.com/400x200" }
     }
   },
@@ -133,8 +143,8 @@ const data = {
       step3: "🏆 Čestitamo! Završili ste igru!"
     },
     steps: {
-      step1: { title: "📍 Korak 1", coords: "48.8584, 2.2945", img: "https://via.placeholder.com/400x200" },
-      step2: { title: "📍 Korak 2", coords: "43.2965, 5.3698", img: "https://via.placeholder.com/400x200" },
+      step1: { title: "📍 Korak 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" },
+      step2: { title: "📍 Korak 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" },
       step3: { title: "🏁 Završni korak", coords: "45.7640, 4.8357", img: "https://via.placeholder.com/400x200" }
     }
   }
@@ -153,7 +163,11 @@ function setLanguage(lang) {
     if(elem.style.display === 'block') {
       document.getElementById(step+'Title').innerText = data[lang].steps[step].title;
       document.getElementById(step+'Coords').innerText = data[lang].steps[step].coords;
-      document.getElementById(step+'Img').src = data[lang].steps[step].img;
+      if(step !== 'step3') {
+        document.getElementById('mapImage'+step.charAt(4)).src = data[lang].steps[step].img;
+      } else {
+        document.getElementById('step3Img').src = data[lang].steps[step].img;
+      }
     }
   });
 }
@@ -178,7 +192,17 @@ function checkCode() {
     msg.innerHTML = "<div class='error'>" + data[currentLang].messages.wrong + "</div>";
   }
 }
-</script>
 
+// Initialize Panzoom for step 1 & 2
+const step1Image = document.getElementById('mapImage1');
+const step2Image = document.getElementById('mapImage2');
+
+const pan1 = Panzoom(step1Image, { maxScale: 3, minScale: 1 });
+const pan2 = Panzoom(step2Image, { maxScale: 3, minScale: 1 });
+
+document.getElementById('mapContainer1').addEventListener('wheel', e => pan1.zoomWithWheel(e));
+document.getElementById('mapContainer2').addEventListener('wheel', e => pan2.zoomWithWheel(e));
+
+</script>
 </body>
 </html>

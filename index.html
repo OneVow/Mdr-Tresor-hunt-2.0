@@ -13,12 +13,10 @@
       color: white;
       text-align: center;
       padding: 20px;
+      transition: background 0.3s;
     }
 
-    h1 {
-      font-size: 1.8em;
-      margin-bottom: 30px;
-    }
+    h1 { font-size: 1.8em; margin-bottom: 30px; }
 
     .input-box {
       display: flex;
@@ -44,7 +42,10 @@
       background-color: #22c55e;
       color: white;
       cursor: pointer;
+      transition: transform 0.2s;
     }
+
+    button:hover { transform: scale(1.05); }
 
     .card {
       background: #1e293b;
@@ -61,26 +62,46 @@
       margin-top: 10px;
     }
 
-    .success { color: #22c55e; margin-top: 15px; }
-    .error { color: #ef4444; margin-top: 15px; }
+    .success { color: #22c55e; margin-top: 15px; animation: pop 0.3s ease; }
+    .error { color: #ef4444; margin-top: 15px; animation: shake 0.3s ease; }
 
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(10px);}
       to {opacity: 1; transform: translateY(0);}
     }
+
+    @keyframes pop {
+      0% { transform: scale(0.8); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+    }
+
+    .lang-switch {
+      margin-top: 15px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #cbd5f5;
+    }
+
+    .lang-switch:hover { text-decoration: underline; }
   </style>
 </head>
-
 <body>
 
-<h1>🧭 Treasure Hunt</h1>
+<h1 id="title">🧭 Treasure Hunt</h1>
 
 <div class="input-box">
   <input type="text" id="codeInput" placeholder="Enter your code">
   <button onclick="checkCode()">Submit</button>
 </div>
 
-<p style="margin-top:10px; font-size:14px; color:#cbd5f5;">
+<p id="hint" style="margin-top:10px; font-size:14px; color:#cbd5f5;">
   Enter the code with only the first letter capitalized.
 </p>
 
@@ -104,25 +125,62 @@
   <img src="https://via.placeholder.com/400x200">
 </div>
 
+<div class="lang-switch">
+  <span onclick="setLanguage('en')">English</span> | 
+  <span onclick="setLanguage('hr')">Croatian</span> | 
+  <span onclick="setLanguage('me')">Montenegro</span>
+</div>
+
 <script>
+  const messages = {
+    en: {
+      hint: "Enter the code with only the first letter capitalized.",
+      wrong: "❌ Wrong code, try again.",
+      step1: "Step 1 unlocked!",
+      step2: "Step 2 unlocked!",
+      step3: "🏆 Congratulations! You finished the game!"
+    },
+    hr: {
+      hint: "Unesite kod s samo prvim velikim slovom.",
+      wrong: "❌ Pogrešan kod, pokušajte ponovno.",
+      step1: "Korak 1 otključan!",
+      step2: "Korak 2 otključan!",
+      step3: "🏆 Čestitamo! Završili ste igru!"
+    },
+    me: {
+      hint: "Unesite kod samo s prvim velikim slovom.",
+      wrong: "❌ Pogrešan kod, pokušajte opet.",
+      step1: "Korak 1 otključan!",
+      step2: "Korak 2 otključan!",
+      step3: "🏆 Čestitamo! Završili ste igru!"
+    }
+  };
+
+  let currentLang = 'en';
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.getElementById('hint').innerText = messages[lang].hint;
+  }
+
   function checkCode() {
- const code = document.getElementById("codeInput").value.trim().toLowerCase();
+    const code = document.getElementById("codeInput").value.trim();
     const msg = document.getElementById("message");
 
-    if (code === "melon") {
+    if (code === "Melon") {
       document.getElementById("step1").style.display = "block";
-      msg.innerHTML = "<div class='success'>Step 1 unlocked!</div>";
+      msg.innerHTML = "<div class='success'>" + messages[currentLang].step1 + "</div>";
     } 
-    else if (code === "OCEAN2") {
+    else if (code === "Ocean2") {
       document.getElementById("step2").style.display = "block";
-      msg.innerHTML = "<div class='success'>Step 2 unlocked!</div>";
+      msg.innerHTML = "<div class='success'>" + messages[currentLang].step2 + "</div>";
     } 
-    else if (code === "OCEAN3") {
+    else if (code === "Ocean3") {
       document.getElementById("step3").style.display = "block";
-      msg.innerHTML = "<div class='success'>🏆 Congratulations! You finished the game!</div>";
+      msg.innerHTML = "<div class='success'>" + messages[currentLang].step3 + "</div>";
     } 
     else {
-      msg.innerHTML = "<div class='error'>❌ Wrong code, try again.</div>";
+      msg.innerHTML = "<div class='error'>" + messages[currentLang].wrong + "</div>";
     }
   }
 </script>

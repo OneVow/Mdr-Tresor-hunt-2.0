@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treasure Hunt</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0f172a, #1e293b);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 30px;
+    }
+
+    .input-box {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    input {
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
+      width: 60%;
+      max-width: 250px;
+    }
+
+    button {
+      padding: 14px 20px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
+      background-color: #22c55e;
+      color: white;
+      cursor: pointer;
+    }
+
+    .card {
+      background: #1e293b;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 15px;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .success { color: #22c55e; margin-top: 15px; }
+    .error { color: #ef4444; margin-top: 15px; }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🧭 Treasure Hunt</h1>
+
+<div class="input-box">
+  <input type="text" id="codeInput" placeholder="Enter your code">
+  <button onclick="checkCode()">Submit</button>
+</div>
+
+<div id="message"></div>
+
+<div id="step1" class="card">
+  <h2>📍 Step 1</h2>
+  <p>48.8584, 2.2945</p>
+  <img src="https://via.placeholder.com/400x200">
+</div>
+
+<div id="step2" class="card">
+  <h2>📍 Step 2</h2>
+  <p>43.2965, 5.3698</p>
+  <img src="https://via.placeholder.com/400x200">
+</div>
+
+<div id="step3" class="card">
+  <h2>🏁 Final Step</h2>
+  <p>45.7640, 4.8357</p>
+  <img src="https://via.placeholder.com/400x200">
+</div>
+
+<script>
+  function checkCode() {
+    const code = document.getElementById("codeInput").value.toUpperCase();
+    const msg = document.getElementById("message");
+
+    if (code === "OCEAN1") {
+      document.getElementById("step1").style.display = "block";
+      msg.innerHTML = "<div class='success'>Step 1 unlocked!</div>";
+    } 
+    else if (code === "OCEAN2") {
+      document.getElementById("step2").style.display = "block";
+      msg.innerHTML = "<div class='success'>Step 2 unlocked!</div>";
+    } 
+    else if (code === "OCEAN3") {
+      document.getElementById("step3").style.display = "block";
+      msg.innerHTML = "<div class='success'>🏆 Congratulations! You finished the game!</div>";
+    } 
+    else {
+      msg.innerHTML = "<div class='error'>❌ Wrong code, try again.</div>";
+    }
+  }
+</script>
+
+</body>
+</html>

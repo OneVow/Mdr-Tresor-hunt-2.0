@@ -145,6 +145,7 @@ img { width: 100%; border-radius: 10px; margin-top: 10px; }
 const data = {
   en: {
     hint: "Enter the code with only the first letter capitalized. The answer are in english.",
+    hints: { step: "🔍 Think about fruits and the ocean… each step has a clue!" },
     messages: {
       wrong: "❌ Wrong code, try again.",
       step1: "Step 1 unlocked!",
@@ -159,6 +160,7 @@ const data = {
   },
   hr: {
     hint: "Unesite kod s samo prvim velikim slovom. Odgovori su na engleskom.",
+    hints: { step: "🔍 Razmislite o voću i oceanu… svaki korak ima trag!" },
     messages: {
       wrong: "❌ Pogrešan kod, pokušajte ponovno.",
       step1: "Korak 1 otključan!",
@@ -173,6 +175,7 @@ const data = {
   },
   me: {
     hint: "Unesite kod samo s prvim velikim slovom. Odgovori su na engleskom.",
+    hints: { step: "🔍 Razmislite o voću i oceanu… svaki korak ima trag!" },
     messages: {
       wrong: "❌ Pogrešan kod, pokušajte opet.",
       step1: "Korak 1 otključan!",
@@ -187,6 +190,7 @@ const data = {
   },
   es: {
     hint: "Introduce el código con solo la primera letra en mayúscula. Las respuestas están en inglés.",
+    hints: { step: "🔍 Piensa en frutas y el océano… cada paso tiene una pista!" },
     messages: {
       wrong: "❌ Código incorrecto, inténtalo de nuevo.",
       step1: "¡Paso 1 desbloqueado!",
@@ -201,6 +205,7 @@ const data = {
   },
   de: {
     hint: "Geben Sie den Code ein, wobei nur der erste Buchstabe groß ist. Die Antworten sind auf Englisch.",
+    hints: { step: "🔍 Denke an Früchte und das Meer… jeder Schritt hat einen Hinweis!" },
     messages: {
       wrong: "❌ Falscher Code, versuche es erneut.",
       step1: "Schritt 1 freigeschaltet!",
@@ -214,7 +219,8 @@ const data = {
     }
   },
   nl: {
-    hint: "Voer de code in met alleen de eerste letter hoofdletter. De antwoorden zijn in het Engels.",
+    hint: "Voer de code in met alleen de eerste letter als hoofdletter. De antwoorden zijn in het Engels.",
+    hints: { step: "🔍 Denk aan fruit en de oceaan… elke stap heeft een aanwijzing!" },
     messages: {
       wrong: "❌ Verkeerde code, probeer het opnieuw.",
       step1: "Stap 1 ontgrendeld!",
@@ -283,7 +289,7 @@ function checkCode() {
 // Hint button
 document.getElementById('hintBtn').addEventListener('click', () => {
   if(confirm("Are you sure you want to see the hint?")) {
-    alert(data[currentLang].hint);
+    alert(data[currentLang].hints.step);
   }
 });
 

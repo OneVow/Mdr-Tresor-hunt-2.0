@@ -35,6 +35,8 @@ img { width: 100%; border-radius: 10px; margin-top: 10px; }
 .success { color: #22c55e; margin-top: 15px; animation: pop 0.3s ease; }
 .error { color: #ef4444; margin-top: 15px; animation: shake 0.3s ease; }
 
+#hint { margin-top:10px; font-size:14px; color:#cbd5f5; }
+
 @keyframes fadeIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
 @keyframes pop { 0%{transform:scale(0.8);} 100%{transform:scale(1);} }
 @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 50%{transform:translateX(5px);} 75%{transform:translateX(-5px);} }
@@ -45,10 +47,16 @@ img { width: 100%; border-radius: 10px; margin-top: 10px; }
 #btn-en { background-color: #3b82f6; color: white; }
 #btn-hr { background-color: #f97316; color: white; }
 #btn-me { background-color: #10b981; color: white; }
+#btn-es { background-color: #ef4444; color: white; }
+#btn-de { background-color: #8b5cf6; color: white; }
 
 #btn-en:hover { background-color: #2563eb; }
 #btn-hr:hover { background-color: #ea580c; }
 #btn-me:hover { background-color: #059669; }
+#btn-es:hover { background-color: #dc2626; }
+#btn-de:hover { background-color: #7c3aed; }
+
+#mapContainer1, #mapContainer2 { width: 100%; max-width: 400px; height: 200px; overflow: hidden; border-radius: 10px; margin: auto; }
 </style>
 </head>
 <body>
@@ -57,17 +65,17 @@ img { width: 100%; border-radius: 10px; margin-top: 10px; }
 
 <div class="input-box">
   <input type="text" id="codeInput" placeholder="Enter your code">
-  <button id="submitBtn" onclick="checkCode()">Submit</button>
+  <button id="submitBtn">Submit</button>
 </div>
 
-<p id="hint" style="margin-top:10px; font-size:14px; color:#cbd5f5;">Enter the code with only the first letter capitalized.The answer are in english.</p>
+<p id="hint">Enter the code with only the first letter capitalized. The answer are in english.</p>
 <div id="message"></div>
 
 <!-- Step 1 Zoomable -->
 <div id="step1" class="card">
   <h2 id="step1Title">📍 Step 1</h2>
   <p id="step1Coords">48.8584, 2.2945</p>
-  <div id="mapContainer1" style="width:400px; height:200px; overflow:hidden; border-radius:10px; margin:auto;">
+  <div id="mapContainer1">
     <img id="mapImage1" src="images/step1-map.jpg" style="width:100%; cursor:grab;">
   </div>
 </div>
@@ -76,7 +84,7 @@ img { width: 100%; border-radius: 10px; margin-top: 10px; }
 <div id="step2" class="card">
   <h2 id="step2Title">📍 Step 2</h2>
   <p id="step2Coords">43.2965, 5.3698</p>
-  <div id="mapContainer2" style="width:400px; height:200px; overflow:hidden; border-radius:10px; margin:auto;">
+  <div id="mapContainer2">
     <img id="mapImage2" src="images/step2-map.jpg" style="width:100%; cursor:grab;">
   </div>
 </div>
@@ -90,20 +98,21 @@ img { width: 100%; border-radius: 10px; margin-top: 10px; }
 
 <!-- Language buttons -->
 <div class="lang-buttons">
-  <button id="btn-en" onclick="setLanguage('en')">English</button>
-  <button id="btn-hr" onclick="setLanguage('hr')">Croatian</button>
-  <button id="btn-me" onclick="setLanguage('me')">Montenegro</button>
+  <button id="btn-en">English</button>
+  <button id="btn-hr">Croatian</button>
+  <button id="btn-me">Montenegrin</button>
+  <button id="btn-es">Spanish</button>
+  <button id="btn-de">German</button>
 </div>
 
 <!-- Panzoom library -->
 <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
 
 <script>
+// Multilingual data
 const data = {
   en: {
-    title: "🧭 Treasure Hunt",
-    hint: "Enter the code with only the first letter capitalized.",
-    submit: "Submit",
+    hint: "Enter the code with only the first letter capitalized. The answer are in english.",
     messages: {
       wrong: "❌ Wrong code, try again.",
       step1: "Step 1 unlocked!",
@@ -117,9 +126,7 @@ const data = {
     }
   },
   hr: {
-    title: "🧭 Lov na blago",
-    hint: "Unesite kod s samo prvim velikim slovom.",
-    submit: "Pošalji",
+    hint: "Unesite kod s samo prvim velikim slovom. Odgovori su na engleskom.",
     messages: {
       wrong: "❌ Pogrešan kod, pokušajte ponovno.",
       step1: "Korak 1 otključan!",
@@ -133,9 +140,7 @@ const data = {
     }
   },
   me: {
-    title: "🧭 Lov na blago",
-    hint: "Unesite kod samo s prvim velikim slovom.",
-    submit: "Pošalji",
+    hint: "Unesite kod samo s prvim velikim slovom. Odgovori su na engleskom.",
     messages: {
       wrong: "❌ Pogrešan kod, pokušajte opet.",
       step1: "Korak 1 otključan!",
@@ -147,17 +152,50 @@ const data = {
       step2: { title: "📍 Korak 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" },
       step3: { title: "🏁 Završni korak", coords: "45.7640, 4.8357", img: "https://via.placeholder.com/400x200" }
     }
+  },
+  es: {
+    hint: "Introduce el código con solo la primera letra en mayúscula. Las respuestas están en inglés.",
+    messages: {
+      wrong: "❌ Código incorrecto, inténtalo de nuevo.",
+      step1: "¡Paso 1 desbloqueado!",
+      step2: "¡Paso 2 desbloqueado!",
+      step3: "🏆 ¡Felicidades! ¡Has terminado el juego!"
+    },
+    steps: {
+      step1: { title: "📍 Paso 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" },
+      step2: { title: "📍 Paso 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" },
+      step3: { title: "🏁 Paso Final", coords: "45.7640, 4.8357", img: "https://via.placeholder.com/400x200" }
+    }
+  },
+  de: {
+    hint: "Geben Sie den Code ein, wobei nur der erste Buchstabe groß ist. Die Antworten sind auf Englisch.",
+    messages: {
+      wrong: "❌ Falscher Code, versuche es erneut.",
+      step1: "Schritt 1 freigeschaltet!",
+      step2: "Schritt 2 freigeschaltet!",
+      step3: "🏆 Herzlichen Glückwunsch! Sie haben das Spiel beendet!"
+    },
+    steps: {
+      step1: { title: "📍 Schritt 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" },
+      step2: { title: "📍 Schritt 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" },
+      step3: { title: "🏁 Letzter Schritt", coords: "45.7640, 4.8357", img: "https://via.placeholder.com/400x200" }
+    }
   }
 };
 
 let currentLang = 'en';
 
+// Language buttons
+['en','hr','me','es','de'].forEach(lang => {
+  document.getElementById('btn-'+lang).addEventListener('click', () => setLanguage(lang));
+});
+
+// Set language function
 function setLanguage(lang) {
   currentLang = lang;
-  document.getElementById('title').innerText = data[lang].title;
   document.getElementById('hint').innerText = data[lang].hint;
-  document.getElementById('submitBtn').innerText = data[lang].submit;
 
+  // Update step info if visible
   ['step1','step2','step3'].forEach(step => {
     const elem = document.getElementById(step);
     if(elem.style.display === 'block') {
@@ -171,6 +209,9 @@ function setLanguage(lang) {
     }
   });
 }
+
+// Check codes
+document.getElementById('submitBtn').addEventListener('click', checkCode);
 
 function checkCode() {
   const code = document.getElementById("codeInput").value.trim();
@@ -193,7 +234,7 @@ function checkCode() {
   }
 }
 
-// Initialize Panzoom for step 1 & 2
+// Panzoom for step 1 & 2
 const step1Image = document.getElementById('mapImage1');
 const step2Image = document.getElementById('mapImage2');
 

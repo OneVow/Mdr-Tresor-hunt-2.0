@@ -273,11 +273,11 @@ function checkCode() {
     document.getElementById("step1").style.display = "block";
     msg.innerHTML = "<div class='success'>" + data[currentLang].messages.step1 + "</div>";
     setLanguage(currentLang);
-  } else if (code === "Ocean2") {
+  } else if (code === "Dorsal fin") {
     document.getElementById("step2").style.display = "block";
     msg.innerHTML = "<div class='success'>" + data[currentLang].messages.step2 + "</div>";
     setLanguage(currentLang);
-  } else if (code === "Ocean3") {
+  } else if (code === "Reef") {
     document.getElementById("step3").style.display = "block";
     document.getElementById("step3Congrats").innerText = data[currentLang].messages.step3;
     document.getElementById('step3Img').src = data[currentLang].steps.step3.img;

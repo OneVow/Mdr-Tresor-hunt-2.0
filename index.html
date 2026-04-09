@@ -106,7 +106,7 @@
 
 <script>
   function checkCode() {
-    const code = document.getElementById("codeInput").value.toUpperCase();
+ const code = document.getElementById("codeInput").value.trim().toLowerCase();
     const msg = document.getElementById("message");
 
     if (code === "Melon") {

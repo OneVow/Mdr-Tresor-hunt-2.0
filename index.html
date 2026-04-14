@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+okay i want to add a tresor map outline arroude the picture : <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -18,25 +18,8 @@ body {
 h1 { font-size: 1.8em; margin-bottom: 30px; }
 
 .input-box { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-
-input {
-  padding: 14px;
-  font-size: 16px;
-  border-radius: 12px;
-  border: none;
-  width: 60%;
-  max-width: 250px;
-}
-
-button {
-  padding: 14px 20px;
-  font-size: 16px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
+input { padding: 14px; font-size: 16px; border-radius: 12px; border: none; width: 60%; max-width: 250px; }
+button { padding: 14px 20px; font-size: 16px; border-radius: 12px; border: none; cursor: pointer; transition: transform 0.2s; }
 button:hover { transform: scale(1.05); }
 
 #hint { margin-top:10px; font-size:14px; color:#cbd5f5; }
@@ -50,44 +33,7 @@ button:hover { transform: scale(1.05); }
   animation: fadeIn 0.5s ease;
 }
 
-/* 🗺️ TREASURE FRAME */
-.map-frame {
-  position: relative;
-  padding: 12px;
-  background: #e6d3a3;
-
-  border: 3px solid #8b6a3e;
-  border-radius: 12px;
-
-  box-shadow:
-    inset 0 0 20px rgba(0,0,0,0.4),
-    0 10px 25px rgba(0,0,0,0.5);
-
-  overflow: hidden;
-}
-
-/* burned effect */
-.map-frame::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background:
-    radial-gradient(circle at 10% 10%, rgba(0,0,0,0.3), transparent 40%),
-    radial-gradient(circle at 90% 90%, rgba(0,0,0,0.3), transparent 40%),
-    radial-gradient(circle at 50% 0%, rgba(0,0,0,0.25), transparent 50%),
-    radial-gradient(circle at 0% 50%, rgba(0,0,0,0.25), transparent 50%);
-
-  pointer-events: none;
-}
-
-/* image style */
-.map-frame img {
-  width: 100%;
-  border-radius: 6px;
-  filter: sepia(40%) contrast(90%) brightness(95%);
-}
-
+img { width: 100%; border-radius: 10px; margin-top: 10px; }
 .success { color: #22c55e; margin-top: 15px; animation: pop 0.3s ease; }
 .error { color: #ef4444; margin-top: 15px; animation: shake 0.3s ease; }
 
@@ -113,7 +59,6 @@ button:hover { transform: scale(1.05); }
   white-space: nowrap;
 }
 
-/* colors */
 #btn-en { background-color: #3b82f6; color: white; }
 #btn-hr { background-color: #f97316; color: white; }
 #btn-me { background-color: #10b981; color: white; }
@@ -122,26 +67,33 @@ button:hover { transform: scale(1.05); }
 #btn-nl { background-color: #f59e0b; color: white; }
 #btn-fr { background-color: #6366f1; color: white; }
 
-#hintBtn {
-  background-color: #fbbf24;
-  color: white;
-}
+#btn-en:hover { background-color: #2563eb; }
+#btn-hr:hover { background-color: #ea580c; }
+#btn-me:hover { background-color: #059669; }
+#btn-es:hover { background-color: #dc2626; }
+#btn-de:hover { background-color: #7c3aed; }
+#btn-nl:hover { background-color: #ff9a00; }
+#btn-fr:hover { background-color: #4f46e5; }
 
-/* map container */
+#hintBtn {
+  background-color: #fbbf24; color: white; border-radius: 12px; padding: 14px 20px; cursor: pointer; transition: transform 0.2s;
+}
+#hintBtn:hover { transform: scale(1.05); background-color: #f59e0b; }
+
 #mapContainer1, #mapContainer2 {
   width: 100%;
   max-width: 400px;
   height: 200px;
   overflow: hidden;
+  border-radius: 10px;
   margin: auto;
   touch-action: none;
 }
 </style>
 </head>
-
 <body>
 
-<h1 id="title">🏴‍☠️ Treasure Hunt</h1>
+<h1 id="title">🧭 Treasure Hunt</h1>
 
 <div class="input-box">
   <input type="text" id="codeInput" placeholder="Enter your code">
@@ -152,32 +104,29 @@ button:hover { transform: scale(1.05); }
 <p id="hint">Enter the code with only the first letter capitalized. The answers are in english.</p>
 <div id="message"></div>
 
-<!-- STEP 1 -->
+<!-- Step 1 Zoomable -->
 <div id="step1" class="card">
   <h2 id="step1Title">📍 Step 1</h2>
   <p id="step1Coords">48.8584, 2.2945</p>
-  <div id="mapContainer1" class="map-frame">
-    <img id="mapImage1" src="images/step1-map.jpg">
+  <div id="mapContainer1">
+    <img id="mapImage1" src="images/step1-map.jpg" style="width:100%; cursor:grab;">
   </div>
 </div>
 
-<!-- STEP 2 -->
+<!-- Step 2 Zoomable -->
 <div id="step2" class="card">
   <h2 id="step2Title">📍 Step 2</h2>
   <p id="step2Coords">43.2965, 5.3698</p>
-  <div id="mapContainer2" class="map-frame">
-    <img id="mapImage2" src="images/step2-map.jpg">
+  <div id="mapContainer2">
+    <img id="mapImage2" src="images/step2-map.jpg" style="width:100%; cursor:grab;">
   </div>
 </div>
 
-<!-- STEP 3 -->
+<!-- Step 3 Final Step -->
 <div id="step3" class="card">
   <h2 id="step3Title">🏁 Final Step</h2>
   <div id="step3Congrats" style="font-size: 2em; margin-top: 20px; color: #22c55e;"></div>
-
-  <div class="map-frame" style="max-width:400px; margin:auto;">
-    <img id="step3Img" src="images/step3-map.jpg">
-  </div>
+  <img id="step3Img" src="images/step3-map.jpg" style="border-radius:10px; margin-top:20px;">
 </div>
 
 <!-- Language buttons -->
@@ -192,9 +141,114 @@ button:hover { transform: scale(1.05); }
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
-
 <script>
-// KEEP YOUR ORIGINAL JS (unchanged)
+// Multilingual data
+const data = {
+  en: {
+    hint: "Enter the code with only the first letter capitalized. The answers are in english.",
+    hints: { step: "🔍 Think about fruits and the ocean… each step has a clue!" },
+    messages: { wrong: "❌ Wrong code, try again.", step1: "Step 1 unlocked!", step2: "Step 2 unlocked!", step3: "🏆 Congratulations! You finished the game!" },
+    steps: { step1: { title: "📍 Step 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" }, step2: { title: "📍 Step 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" }, step3: { title: "🏁 Final Step", coords: "", img: "https://via.placeholder.com/400x200" } }
+  },
+  hr: {
+    hint: "Unesite kod s samo prvim velikim slovom. Odgovori su na engleskom.",
+    hints: { step: "🔍 Razmislite o voću i oceanu… svaki korak ima trag!" },
+    messages: { wrong: "❌ Pogrešan kod, pokušajte ponovno.", step1: "Korak 1 otključan!", step2: "Korak 2 otključan!", step3: "🏆 Čestitamo! Završili ste igru!" },
+    steps: { step1: { title: "📍 Korak 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" }, step2: { title: "📍 Korak 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" }, step3: { title: "🏁 Završni korak", coords: "", img: "https://via.placeholder.com/400x200" } }
+  },
+  me: {
+    hint: "Unesite kod samo s prvim velikim slovom. Odgovori su na engleskom.",
+    hints: { step: "🔍 Razmislite o voću i oceanu… svaki korak ima trag!" },
+    messages: { wrong: "❌ Pogrešan kod, pokušajte opet.", step1: "Korak 1 otključan!", step2: "Korak 2 otključan!", step3: "🏆 Čestitamo! Završili ste igru!" },
+    steps: { step1: { title: "📍 Korak 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" }, step2: { title: "📍 Korak 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" }, step3: { title: "🏁 Završni korak", coords: "", img: "https://via.placeholder.com/400x200" } }
+  },
+  es: {
+    hint: "Introduce el código con solo la primera letra en mayúscula. Las respuestas están en inglés.",
+    hints: { step: "🔍 Piensa en frutas y el océano… cada paso tiene una pista!" },
+    messages: { wrong: "❌ Código incorrecto, inténtalo de nuevo.", step1: "¡Paso 1 desbloqueado!", step2: "¡Paso 2 desbloqueado!", step3: "🏆 ¡Felicidades! ¡Has terminado el juego!" },
+    steps: { step1: { title: "📍 Paso 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" }, step2: { title: "📍 Paso 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" }, step3: { title: "🏁 Paso Final", coords: "", img: "https://via.placeholder.com/400x200" } }
+  },
+  de: {
+    hint: "Geben Sie den Code ein, wobei nur der erste Buchstabe groß ist. Die Antworten sind auf Englisch.",
+    hints: { step: "🔍 Denke an Früchte und das Meer… jeder Schritt hat einen Hinweis!" },
+    messages: { wrong: "❌ Falscher Code, versuche es erneut.", step1: "Schritt 1 freigeschaltet!", step2: "Schritt 2 freigeschaltet!", step3: "🏆 Herzlichen Glückwunsch! Sie haben das Spiel beendet!" },
+    steps: { step1: { title: "📍 Schritt 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" }, step2: { title: "📍 Schritt 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" }, step3: { title: "🏁 Letzter Schritt", coords: "", img: "https://via.placeholder.com/400x200" } }
+  },
+  nl: {
+    hint: "Voer de code in met alleen de eerste letter als hoofdletter. De antwoorden zijn in het Engels.",
+    hints: { step: "🔍 Denk aan fruit en de oceaan… elke stap heeft een aanwijzing!" },
+    messages: { wrong: "❌ Verkeerde code, probeer het opnieuw.", step1: "Stap 1 ontgrendeld!", step2: "Stap 2 ontgrendeld!", step3: "🏆 Gefeliciteerd! Je hebt het spel voltooid!" },
+    steps: { step1: { title: "📍 Stap 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" }, step2: { title: "📍 Stap 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" }, step3: { title: "🏁 Laatste stap", coords: "", img: "https://via.placeholder.com/400x200" } }
+  },
+  fr: {
+    hint: "Entrez le code avec seulement la première lettre en majuscule. Les réponses sont en anglais.",
+    hints: { step: "🔍 Pensez aux fruits et à l'océan… chaque étape a un indice!" },
+    messages: { wrong: "❌ Code incorrect, essayez encore.", step1: "Étape 1 débloquée!", step2: "Étape 2 débloquée!", step3: "🏆 Félicitations! Vous avez terminé le jeu!" },
+    steps: { step1: { title: "📍 Étape 1", coords: "48.8584, 2.2945", img: "images/step1-map.jpg" }, step2: { title: "📍 Étape 2", coords: "43.2965, 5.3698", img: "images/step2-map.jpg" }, step3: { title: "🏁 Étape finale", coords: "", img: "https://via.placeholder.com/400x200" } }
+  }
+};
+
+let currentLang = 'en';
+
+// Language buttons
+['en','hr','me','es','de','nl','fr'].forEach(lang => {
+  document.getElementById('btn-'+lang).addEventListener('click', () => setLanguage(lang));
+});
+
+// Set language
+function setLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.getElementById('hint').innerText = data[lang].hint;
+
+  ['step1','step2','step3'].forEach(step => {
+    const elem = document.getElementById(step);
+    if(elem.style.display === 'block') {
+      document.getElementById(step+'Title').innerText = data[lang].steps[step].title;
+      if(step !== 'step3') {
+        document.getElementById(step+'Coords').innerText = data[lang].steps[step].coords;
+        document.getElementById('mapImage'+step.charAt(4)).src = data[lang].steps[step].img;
+      } else {
+        document.getElementById('step3Congrats').innerText = data[lang].messages.step3;
+        document.getElementById('step3Img').src = data[lang].steps[step].img;
+      }
+    }
+  });
+}
+
+// Check codes
+document.getElementById('submitBtn').addEventListener('click', () => {
+  const code = document.getElementById("codeInput").value.trim();
+  const msg = document.getElementById("message");
+  if (code === "Melon") {
+    document.getElementById("step1").style.display = "block";
+    msg.innerHTML = "<div class='success'>" + data[currentLang].messages.step1 + "</div>";
+    setLanguage(currentLang);
+  } else if (code === "Dorsal fin") {
+    document.getElementById("step2").style.display = "block";
+    msg.innerHTML = "<div class='success'>" + data[currentLang].messages.step2 + "</div>";
+    setLanguage(currentLang);
+  } else if (code === "Reef") {
+    document.getElementById("step3").style.display = "block";
+    document.getElementById("step3Congrats").innerText = data[currentLang].messages.step3;
+    document.getElementById('step3Img').src = data[currentLang].steps.step3.img;
+  } else {
+    msg.innerHTML = "<div class='error'>" + data[currentLang].messages.wrong + "</div>";
+  }
+});
+
+// Hint button
+document.getElementById('hintBtn').addEventListener('click', () => {
+  if(confirm("Are you sure you want to see the hint?")) {
+    alert(data[currentLang].hints.step);
+  }
+});
+
+// Panzoom for maps
+const pan1 = Panzoom(document.getElementById('mapImage1'), { maxScale: 3, minScale: 1, contain: 'outside' });
+const pan2 = Panzoom(document.getElementById('mapImage2'), { maxScale: 3, minScale: 1, contain: 'outside' });
+document.getElementById('mapContainer1').addEventListener('wheel', e => pan1.zoomWithWheel(e));
+document.getElementById('mapContainer2').addEventListener('wheel', e => pan2.zoomWithWheel(e));
 </script>
 
 </body>

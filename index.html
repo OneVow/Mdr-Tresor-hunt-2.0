@@ -52,7 +52,6 @@ button:hover { transform: scale(1.05); }
   padding: 20px;
   border-radius: 15px;
   display: none;
-  animation: fadeIn 0.5s ease;
 }
 
 img {
@@ -64,6 +63,7 @@ img {
 .success { color: #22c55e; margin-top: 15px; }
 .error { color: #ef4444; margin-top: 15px; }
 
+/* LANG BUTTONS */
 .lang-buttons {
   margin-top: 20px;
   display: flex;
@@ -86,121 +86,160 @@ img {
 #btn-nl { background:#f59e0b; }
 #btn-fr { background:#6366f1; }
 
-#hintBtn { background:#fbbf24; }
+/* HINT BUTTONS */
+.hint-buttons {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hint-buttons button {
+  background: #fbbf24;
+}
 
 </style>
 </head>
 
 <body>
 
-<h1>🧭 Treasure Hunt</h1>
+<h1 id="title">🧭 Treasure Hunt</h1>
 
 <div class="input-box">
-  <input type="text" id="codeInput">
+  <input type="text" id="codeInput" placeholder="Enter your code">
   <button id="submitBtn">Submit</button>
-  <button onclick="showHint()">Hint</button>
 </div>
 
 <p id="hint"></p>
 <div id="message"></div>
 
+<!-- 3 HINT BUTTONS -->
+<div class="hint-buttons">
+  <button onclick="showHint(1)">Hint 1</button>
+  <button onclick="showHint(2)">Hint 2</button>
+  <button onclick="showHint(3)">Hint 3</button>
+</div>
+
+<!-- Steps -->
 <div id="step1" class="card">
-  <h2 id="step1Title"></h2>
-  <p id="step1Coords"></p>
-  <div id="mapContainer1">
-    <img id="mapImage1" src="images/step1-map.jpg">
-  </div>
+  <h2 id="step1Title">📍 Step 1</h2>
+  <p id="step1Coords">48.8584, 2.2945</p>
+  <img src="images/step1-map.jpg">
 </div>
 
 <div id="step2" class="card">
-  <h2 id="step2Title"></h2>
-  <p id="step2Coords"></p>
-  <div id="mapContainer2">
-    <img id="mapImage2" src="images/step2-map.jpg">
-  </div>
+  <h2 id="step2Title">📍 Step 2</h2>
+  <p id="step2Coords">43.2965, 5.3698</p>
+  <img src="images/step2-map.jpg">
 </div>
 
 <div id="step3" class="card">
-  <h2 id="step3Title"></h2>
+  <h2 id="step3Title">🏁 Final Step</h2>
   <div id="step3Congrats"></div>
-  <img id="step3Img" src="images/step3-map.jpg">
+  <img src="images/step3-map.jpg">
 </div>
 
+<!-- LANGUAGES FULL NAMES -->
 <div class="lang-buttons">
-  <button id="btn-en">EN</button>
-  <button id="btn-hr">HR</button>
-  <button id="btn-me">ME</button>
-  <button id="btn-es">ES</button>
-  <button id="btn-de">DE</button>
-  <button id="btn-nl">NL</button>
-  <button id="btn-fr">FR</button>
+  <button id="btn-en">English</button>
+  <button id="btn-hr">Hrvatski</button>
+  <button id="btn-me">Crnogorski</button>
+  <button id="btn-es">Español</button>
+  <button id="btn-de">Deutsch</button>
+  <button id="btn-nl">Nederlands</button>
+  <button id="btn-fr">Français</button>
 </div>
 
 <script>
 const data = {
   en:{
-    hint:"Enter the code with only the first letter capitalized.",
-    hints:["🍈 Green fruit","🦈 Shark part","🌊 Coral ecosystem"],
-    wrong:"Wrong code",
-    step1:"Step 1 unlocked!",
-    step2:"Step 2 unlocked!",
-    step3:"Finished!"
+    hint:"Enter the code with only the first letter capitalized. The answers are in English.",
+    hints:{
+      1:"🍈 It's a fruit with green flesh",
+      2:"🦈 It's on a shark",
+      3:"🌊 Coral ecosystem"
+    },
+    messages:{
+      wrong:"❌ Wrong code",
+      step1:"Step 1 unlocked!",
+      step2:"Step 2 unlocked!",
+      step3:"🏆 You finished!"
+    }
   },
   fr:{
-    hint:"Entrez le code avec une majuscule.",
-    hints:["🍈 Fruit vert","🦈 Partie du requin","🌊 Écosystème marin"],
-    wrong:"Mauvais code",
-    step1:"Étape 1 débloquée!",
-    step2:"Étape 2 débloquée!",
-    step3:"Fini!"
+    hint:"Entrez le code avec seulement la première lettre en majuscule.",
+    hints:{
+      1:"🍈 C'est un fruit vert",
+      2:"🦈 Partie d’un requin",
+      3:"🌊 Écosystème marin"
+    },
+    messages:{
+      wrong:"❌ Mauvais code",
+      step1:"Étape 1 débloquée!",
+      step2:"Étape 2 débloquée!",
+      step3:"🏆 Terminé!"
+    }
+  },
+  es:{
+    hint:"Introduce el código con solo la primera letra en mayúscula.",
+    hints:{
+      1:"🍈 Fruta verde",
+      2:"🦈 Parte del tiburón",
+      3:"🌊 Ecosistema marino"
+    },
+    messages:{
+      wrong:"❌ Código incorrecto",
+      step1:"Paso 1 desbloqueado!",
+      step2:"Paso 2 desbloqueado!",
+      step3:"🏆 Terminado!"
+    }
   }
 };
 
-let lang="en";
-let currentStep=0;
+let currentLang = "en";
 
-// language buttons
+// LANGUAGE SWITCH
 document.querySelectorAll(".lang-buttons button").forEach(btn=>{
-  btn.onclick=()=>{lang=btn.id.split("-")[1]; updateLang();}
+  btn.onclick = () => {
+    currentLang = btn.id.split("-")[1];
+    updateLang();
+  };
 });
 
 function updateLang(){
-  document.getElementById("hint").innerText=data[lang].hint;
+  document.getElementById("hint").innerText = data[currentLang].hint;
 }
 
-updateLang();
-
-// hint system
-function showHint(){
-  if(currentStep===0){ alert(data[lang].hints[0]); }
-  else if(currentStep===1){ alert(data[lang].hints[1]); }
-  else if(currentStep>=2){ alert(data[lang].hints[2]); }
+// HINTS
+function showHint(step){
+  alert(data[currentLang].hints[step]);
 }
 
-// submit
-document.getElementById("submitBtn").onclick=()=>{
-  let code=document.getElementById("codeInput").value.trim();
-  let msg=document.getElementById("message");
+// SUBMIT
+document.getElementById("submitBtn").onclick = () => {
+  const code = document.getElementById("codeInput").value.trim();
+  const msg = document.getElementById("message");
 
-  if(code==="Melon"){
-    document.getElementById("step1").style.display="block";
-    msg.innerHTML="<div class='success'>"+data[lang].step1+"</div>";
-    currentStep=1;
+  if(code === "Melon"){
+    document.getElementById("step1").style.display = "block";
+    msg.innerHTML = "<div class='success'>"+data[currentLang].messages.step1+"</div>";
   }
-  else if(code==="Dorsal fin"){
-    document.getElementById("step2").style.display="block";
-    msg.innerHTML="<div class='success'>"+data[lang].step2+"</div>";
-    currentStep=2;
+  else if(code === "Dorsal fin"){
+    document.getElementById("step2").style.display = "block";
+    msg.innerHTML = "<div class='success'>"+data[currentLang].messages.step2+"</div>";
   }
-  else if(code==="Reef"){
-    document.getElementById("step3").style.display="block";
-    document.getElementById("step3Congrats").innerText=data[lang].step3;
-    currentStep=3;
+  else if(code === "Reef"){
+    document.getElementById("step3").style.display = "block";
+    document.getElementById("step3Congrats").innerText = data[currentLang].messages.step3;
   }
   else{
-    msg.innerHTML="<div class='error'>"+data[lang].wrong+"</div>";
+    msg.innerHTML = "<div class='error'>"+data[currentLang].messages.wrong+"</div>";
   }
 };
+
+// INIT
+updateLang();
 </script>
 
 </body>

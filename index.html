@@ -39,10 +39,7 @@ button {
   border-radius: 12px;
   border: none;
   cursor: pointer;
-  transition: transform 0.2s;
 }
-
-button:hover { transform: scale(1.05); }
 
 #hint { margin-top:10px; font-size:14px; color:#cbd5f5; }
 
@@ -54,10 +51,20 @@ button:hover { transform: scale(1.05); }
   display: none;
 }
 
-img {
+/* IMPORTANT POUR ZOOM */
+.map-container {
   width: 100%;
+  max-width: 400px;
+  height: 220px;
+  overflow: hidden;
+  margin: auto;
   border-radius: 10px;
-  margin-top: 10px;
+  touch-action: none;
+}
+
+.map-container img {
+  width: 100%;
+  cursor: grab;
 }
 
 .success { color: #22c55e; margin-top: 15px; }
@@ -66,9 +73,9 @@ img {
 .lang-buttons {
   margin-top: 20px;
   display: flex;
-  justify-content: center;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
 }
 
 .lang-buttons button {
@@ -90,12 +97,8 @@ img {
   display: flex;
   gap: 10px;
   justify-content: center;
-  flex-wrap: wrap;
 }
-
-.hint-buttons button {
-  background: #fbbf24;
-}
+.hint-buttons button { background:#fbbf24; }
 </style>
 </head>
 
@@ -117,18 +120,25 @@ img {
   <button onclick="showHint(3)">Hint 3</button>
 </div>
 
+<!-- STEP 1 -->
 <div id="step1" class="card">
   <h2>📍 Step 1</h2>
   <p>48.8584, 2.2945</p>
-  <img src="images/step1-map.jpg">
+  <div class="map-container" id="mapContainer1">
+    <img id="mapImage1" src="images/step1-map.jpg">
+  </div>
 </div>
 
+<!-- STEP 2 -->
 <div id="step2" class="card">
   <h2>📍 Step 2</h2>
   <p>43.2965, 5.3698</p>
-  <img src="images/step2-map.jpg">
+  <div class="map-container" id="mapContainer2">
+    <img id="mapImage2" src="images/step2-map.jpg">
+  </div>
 </div>
 
+<!-- STEP 3 -->
 <div id="step3" class="card">
   <h2>🏁 Final Step</h2>
   <div id="step3Congrats"></div>
@@ -145,80 +155,52 @@ img {
   <button id="btn-fr">Français</button>
 </div>
 
+<!-- LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
+
 <script>
+// ZOOM
+const pan1 = Panzoom(document.getElementById('mapImage1'), { maxScale: 4 });
+const pan2 = Panzoom(document.getElementById('mapImage2'), { maxScale: 4 });
+
+document.getElementById('mapContainer1').addEventListener('wheel', pan1.zoomWithWheel);
+document.getElementById('mapContainer2').addEventListener('wheel', pan2.zoomWithWheel);
+
+// DATA
 const data = {
-  en:{
-    hint:"Enter the code with only the first letter capitalized. The answer must be written in English.",
-    hints:{1:"🍈 Green fruit",2:"🦈 Shark part",3:"🌊 Coral ecosystem"},
-    messages:{wrong:"❌ Wrong code",step1:"Step 1 unlocked!",step2:"Step 2 unlocked!",step3:"🏆 Finished!"}
-  },
-  fr:{
-    hint:"Entrez le code avec seulement la première lettre en majuscule. La réponse doit être écrite en anglais.",
-    hints:{1:"🍈 Fruit vert",2:"🦈 Partie du requin",3:"🌊 Écosystème marin"},
-    messages:{wrong:"❌ Mauvais code",step1:"Étape 1 débloquée!",step2:"Étape 2 débloquée!",step3:"🏆 Terminé!"}
-  },
-  es:{
-    hint:"Introduce el código con solo la primera letra en mayúscula. La respuesta debe estar en inglés.",
-    hints:{1:"🍈 Fruta verde",2:"🦈 Parte del tiburón",3:"🌊 Ecosistema marino"},
-    messages:{wrong:"❌ Código incorrecto",step1:"Paso 1 desbloqueado!",step2:"Paso 2 desbloqueado!",step3:"🏆 Terminado!"}
-  },
-  hr:{
-    hint:"Unesite kod s velikim početnim slovom. Odgovor mora biti napisan na engleskom.",
-    hints:{1:"🍈 Zeleno voće",2:"🦈 Dio morskog psa",3:"🌊 Morski ekosustav"},
-    messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Gotovo!"}
-  },
-  me:{
-    hint:"Unesite kod sa velikim početnim slovom. Odgovor mora biti napisan na engleskom.",
-    hints:{1:"🍈 Zeleno voće",2:"🦈 Dio ajkule",3:"🌊 Morski ekosistem"},
-    messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Gotovo!"}
-  },
-  de:{
-    hint:"Geben Sie den Code mit großem Anfangsbuchstaben ein. Die Antwort muss auf Englisch geschrieben sein.",
-    hints:{1:"🍈 Grünes Obst",2:"🦈 Teil eines Hais",3:"🌊 Meeresökosystem"},
-    messages:{wrong:"❌ Falscher Code",step1:"Schritt 1 freigeschaltet!",step2:"Schritt 2 freigeschaltet!",step3:"🏆 Fertig!"}
-  },
-  nl:{
-    hint:"Voer de code in met een hoofdletter. Het antwoord moet in het Engels geschreven zijn.",
-    hints:{1:"🍈 Groen fruit",2:"🦈 Deel van een haai",3:"🌊 Zee-ecosysteem"},
-    messages:{wrong:"❌ Verkeerde code",step1:"Stap 1 ontgrendeld!",step2:"Stap 2 ontgrendeld!",step3:"🏆 Klaar!"}
-  }
+  en:{ hint:"Enter the code. The answer must be in English.",
+      hints:{1:"🍈 Green fruit",2:"🦈 Shark part",3:"🌊 Coral ecosystem"},
+      messages:{wrong:"Wrong",step1:"Step 1!",step2:"Step 2!",step3:"Finished!"}},
 };
 
-let currentLang = "en";
-
-document.querySelectorAll(".lang-buttons button").forEach(btn=>{
-  btn.onclick = () => {
-    currentLang = btn.id.split("-")[1];
-    updateLang();
-  };
-});
+let currentLang="en";
 
 function updateLang(){
-  document.getElementById("hint").innerText = data[currentLang].hint;
+  document.getElementById("hint").innerText=data[currentLang].hint;
 }
 
 function showHint(step){
   alert(data[currentLang].hints[step]);
 }
 
-document.getElementById("submitBtn").onclick = () => {
-  const code = document.getElementById("codeInput").value.trim();
-  const msg = document.getElementById("message");
+document.getElementById("submitBtn").onclick=()=>{
+  let code=document.getElementById("codeInput").value.trim();
+  let msg=document.getElementById("message");
 
-  if(code === "Melon"){
-    document.getElementById("step1").style.display = "block";
-    msg.innerHTML = "<div class='success'>"+data[currentLang].messages.step1+"</div>";
+  if(code==="Melon"){
+    document.getElementById("step1").style.display="block";
+    msg.innerHTML="<div class='success'>"+data[currentLang].messages.step1+"</div>";
   }
-  else if(code === "Dorsal fin"){
-    document.getElementById("step2").style.display = "block";
-    msg.innerHTML = "<div class='success'>"+data[currentLang].messages.step2+"</div>";
+  else if(code==="Dorsal fin"){
+    document.getElementById("step2").style.display="block";
+    msg.innerHTML="<div class='success'>"+data[currentLang].messages.step2+"</div>";
   }
-  else if(code === "Reef"){
-    document.getElementById("step3").style.display = "block";
-    document.getElementById("step3Congrats").innerText = data[currentLang].messages.step3;
+  else if(code==="Reef"){
+    document.getElementById("step3").style.display="block";
+    document.getElementById("step3Congrats").innerText=data[currentLang].messages.step3;
   }
   else{
-    msg.innerHTML = "<div class='error'>"+data[currentLang].messages.wrong+"</div>";
+    msg.innerHTML="<div class='error'>"+data[currentLang].messages.wrong+"</div>";
   }
 };
 

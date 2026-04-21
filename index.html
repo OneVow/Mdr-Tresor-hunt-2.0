@@ -1,92 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treasure Hunt</title>
+
+<link rel="icon" type="image/png" href="images/favicon.png">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #0f172a, #1e293b);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 { margin-bottom: 20px; }
+
+.input-box {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+input {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.hint-buttons {
+  margin-top: 10px;
+}
+
+.lang-buttons {
+  margin-top: 20px;
+}
+
+#bottomLogo {
+  display: block;
+  margin: 30px auto;
+  width: 120px;
+}
+
+.card {
+  display: none;
+  margin-top: 20px;
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧭 Treasure Hunt</h1>
+
+<div class="input-box">
+  <input type="text" id="codeInput" placeholder="Enter code">
+  <button id="submitBtn">Submit</button>
+</div>
+
+<!-- HINT BUTTONS -->
+<div class="hint-buttons">
+  <button onclick="showHint(1)">Hint 1</button>
+  <button onclick="showHint(2)">Hint 2</button>
+  <button onclick="showHint(3)">Hint 3</button>
+</div>
+
+<p id="hint">Enter the code with only the first letter capitalized.</p>
+<div id="message"></div>
+
+<!-- STEPS -->
+<div id="step1" class="card">📍 Step 1 unlocked!</div>
+<div id="step2" class="card">📍 Step 2 unlocked!</div>
+<div id="step3" class="card">🏁 Finished!</div>
+
+<!-- LANG BUTTONS -->
+<div class="lang-buttons">
+  <button id="btn-en">EN</button>
+  <button id="btn-fr">FR</button>
+</div>
+
+<img src="images/favicon.png" id="bottomLogo">
+
 <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-// Multilingual data
 const data = {
   en: {
     hint: "Enter the code with only the first letter capitalized.",
     hints: {
-      step1: "🍈 It's a fruit with a green inside...",
-      step2: "🦈 Found on sharks...",
-      step3: "🌊 Colorful underwater ecosystem..."
-    },
-    messages: {
-      wrong: "❌ Wrong code",
-      step1: "Step 1 unlocked!",
-      step2: "Step 2 unlocked!",
-      step3: "🏆 Finished!"
+      step1: "🍈 A green fruit",
+      step2: "🦈 Shark part",
+      step3: "🌊 Ocean ecosystem"
+    }
+  },
+  fr: {
+    hint: "Entrez le code avec une majuscule.",
+    hints: {
+      step1: "🍈 Fruit vert",
+      step2: "🦈 Partie du requin",
+      step3: "🌊 Écosystème marin"
     }
   }
 };
 
-let currentLang = 'en';
+let currentLang = "en";
 
-// Buttons
-['en','hr','me','es','de','nl','fr'].forEach(lang => {
-  const btn = document.getElementById('btn-'+lang);
-  if(btn){
-    btn.addEventListener('click', () => setLanguage(lang));
-  }
-});
-
-function setLanguage(lang) {
+// Language
+function setLanguage(lang){
   currentLang = lang;
-  document.getElementById('hint').innerText = data[lang]?.hint || data.en.hint;
+  const langData = data[lang] || data.en;
+  document.getElementById("hint").innerText = langData.hint;
 }
 
-// HINTS
-window.showHint = function(step) {
+document.getElementById("btn-en").onclick = () => setLanguage("en");
+document.getElementById("btn-fr").onclick = () => setLanguage("fr");
 
-  if (step === 2 && document.getElementById("step1").style.display !== "block") {
+// Hints
+window.showHint = function(step){
+  const langData = data[currentLang] || data.en;
+
+  if(step === 2 && document.getElementById("step1").style.display !== "block"){
     alert("Finish step 1 first!");
     return;
   }
 
-  if (step === 3 && document.getElementById("step2").style.display !== "block") {
+  if(step === 3 && document.getElementById("step2").style.display !== "block"){
     alert("Finish step 2 first!");
     return;
   }
 
-  alert(data[currentLang].hints["step"+step]);
+  alert(langData.hints["step"+step]);
 };
 
-// SUBMIT
-document.getElementById('submitBtn').addEventListener('click', () => {
+// Submit
+document.getElementById("submitBtn").onclick = function(){
   const code = document.getElementById("codeInput").value.trim();
   const msg = document.getElementById("message");
 
-  if (code === "Melon") {
+  if(code === "Melon"){
     document.getElementById("step1").style.display = "block";
-    msg.innerHTML = "<div class='success'>Step 1 unlocked!</div>";
+    msg.innerHTML = "Step 1 unlocked";
 
-  } else if (code === "Dorsal fin") {
+  } else if(code === "Dorsal fin"){
     document.getElementById("step2").style.display = "block";
-    msg.innerHTML = "<div class='success'>Step 2 unlocked!</div>";
+    msg.innerHTML = "Step 2 unlocked";
 
-  } else if (code === "Reef") {
+  } else if(code === "Reef"){
     document.getElementById("step3").style.display = "block";
-    document.getElementById("step3Congrats").innerText = "🏆 Finished!";
+    msg.innerHTML = "🏆 Finished!";
 
   } else {
-    msg.innerHTML = "<div class='error'>Wrong code</div>";
+    msg.innerHTML = "❌ Wrong code";
   }
-});
-
-// PANZOOM (safe)
-const img1 = document.getElementById('mapImage1');
-const img2 = document.getElementById('mapImage2');
-
-if(img1){
-  const pan1 = Panzoom(img1, { maxScale: 3 });
-  document.getElementById('mapContainer1').addEventListener('wheel', e => pan1.zoomWithWheel(e));
-}
-
-if(img2){
-  const pan2 = Panzoom(img2, { maxScale: 3 });
-  document.getElementById('mapContainer2').addEventListener('wheel', e => pan2.zoomWithWheel(e));
-}
+};
 
 });
 </script>
+
+</body>
+</html>

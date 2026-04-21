@@ -11,54 +11,95 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(180deg, #0f172a, #1e293b);
+  background: 
+    url("images/favicon.png") no-repeat top right,
+    linear-gradient(180deg, #0f172a, #1e293b);
+  
+  background-size: 120px, cover;
+  background-position: top 20px right 20px, center;
+
   color: white;
   text-align: center;
   padding: 20px;
 }
 
-h1 { margin-bottom: 20px; }
+h1 { font-size: 1.8em; margin-bottom: 30px; }
 
-.input-box {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+.input-box { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
 input {
-  padding: 12px;
-  border-radius: 10px;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 12px;
   border: none;
+  width: 60%;
+  max-width: 250px;
 }
 
 button {
-  padding: 12px;
-  border-radius: 10px;
+  padding: 14px 20px;
+  font-size: 16px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
+  transition: transform 0.2s;
 }
+
+button:hover { transform: scale(1.05); }
 
 .hint-buttons {
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#hint { margin-top:10px; font-size:14px; color:#cbd5f5; }
+
+.card {
+  background: #1e293b;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+img { width: 100%; border-radius: 10px; margin-top: 10px; }
+
+.success { color: #22c55e; margin-top: 15px; }
+.error { color: #ef4444; margin-top: 15px; }
+
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(10px);}
+  to {opacity:1; transform: translateY(0);}
 }
 
 .lang-buttons {
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-#bottomLogo {
-  display: block;
-  margin: 30px auto;
-  width: 120px;
+.lang-buttons button {
+  font-size: 12px; 
+  padding: 8px 12px; 
+  border-radius: 8px;
 }
 
-.card {
-  display: none;
-  margin-top: 20px;
-  background: #1e293b;
-  padding: 15px;
+#btn-en { background-color: #3b82f6; color: white; }
+#btn-fr { background-color: #6366f1; color: white; }
+
+#mapContainer1, #mapContainer2 {
+  width: 100%;
+  max-width: 400px;
+  height: 200px;
+  overflow: hidden;
   border-radius: 10px;
+  margin: auto;
 }
 </style>
 </head>
@@ -68,7 +109,7 @@ button {
 <h1>🧭 Treasure Hunt</h1>
 
 <div class="input-box">
-  <input type="text" id="codeInput" placeholder="Enter code">
+  <input type="text" id="codeInput" placeholder="Enter your code">
   <button id="submitBtn">Submit</button>
 </div>
 
@@ -82,31 +123,46 @@ button {
 <p id="hint">Enter the code with only the first letter capitalized.</p>
 <div id="message"></div>
 
-<!-- STEPS -->
-<div id="step1" class="card">📍 Step 1 unlocked!</div>
-<div id="step2" class="card">📍 Step 2 unlocked!</div>
-<div id="step3" class="card">🏁 Finished!</div>
-
-<!-- LANG BUTTONS -->
-<div class="lang-buttons">
-  <button id="btn-en">EN</button>
-  <button id="btn-fr">FR</button>
+<!-- Step 1 -->
+<div id="step1" class="card">
+  <h2>📍 Step 1</h2>
+  <p>48.8584, 2.2945</p>
+  <div id="mapContainer1">
+    <img id="mapImage1" src="images/step1-map.jpg">
+  </div>
 </div>
 
-<img src="images/favicon.png" id="bottomLogo">
+<!-- Step 2 -->
+<div id="step2" class="card">
+  <h2>📍 Step 2</h2>
+  <p>43.2965, 5.3698</p>
+  <div id="mapContainer2">
+    <img id="mapImage2" src="images/step2-map.jpg">
+  </div>
+</div>
+
+<!-- Step 3 -->
+<div id="step3" class="card">
+  <h2>🏁 Final Step</h2>
+  <div id="step3Congrats"></div>
+</div>
+
+<!-- Languages -->
+<div class="lang-buttons">
+  <button id="btn-en">English</button>
+  <button id="btn-fr">Français</button>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-
 const data = {
   en: {
     hint: "Enter the code with only the first letter capitalized.",
     hints: {
-      step1: "🍈 A green fruit",
+      step1: "🍈 Green fruit",
       step2: "🦈 Shark part",
-      step3: "🌊 Ocean ecosystem"
+      step3: "🌊 Coral ecosystem"
     }
   },
   fr: {
@@ -121,19 +177,18 @@ const data = {
 
 let currentLang = "en";
 
-// Language
+// language
+document.getElementById("btn-en").onclick = () => setLanguage("en");
+document.getElementById("btn-fr").onclick = () => setLanguage("fr");
+
 function setLanguage(lang){
   currentLang = lang;
   const langData = data[lang] || data.en;
   document.getElementById("hint").innerText = langData.hint;
 }
 
-document.getElementById("btn-en").onclick = () => setLanguage("en");
-document.getElementById("btn-fr").onclick = () => setLanguage("fr");
-
-// Hints
-window.showHint = function(step){
-  const langData = data[currentLang] || data.en;
+// hints
+function showHint(step){
 
   if(step === 2 && document.getElementById("step1").style.display !== "block"){
     alert("Finish step 1 first!");
@@ -145,32 +200,38 @@ window.showHint = function(step){
     return;
   }
 
+  const langData = data[currentLang] || data.en;
   alert(langData.hints["step"+step]);
-};
+}
 
-// Submit
+// submit
 document.getElementById("submitBtn").onclick = function(){
   const code = document.getElementById("codeInput").value.trim();
   const msg = document.getElementById("message");
 
   if(code === "Melon"){
     document.getElementById("step1").style.display = "block";
-    msg.innerHTML = "Step 1 unlocked";
+    msg.innerHTML = "<div class='success'>Step 1 unlocked!</div>";
 
   } else if(code === "Dorsal fin"){
     document.getElementById("step2").style.display = "block";
-    msg.innerHTML = "Step 2 unlocked";
+    msg.innerHTML = "<div class='success'>Step 2 unlocked!</div>";
 
   } else if(code === "Reef"){
     document.getElementById("step3").style.display = "block";
-    msg.innerHTML = "🏆 Finished!";
+    document.getElementById("step3Congrats").innerText = "🏆 Finished!";
 
   } else {
-    msg.innerHTML = "❌ Wrong code";
+    msg.innerHTML = "<div class='error'>❌ Wrong code</div>";
   }
 };
 
-});
+// panzoom
+const pan1 = Panzoom(document.getElementById('mapImage1'));
+const pan2 = Panzoom(document.getElementById('mapImage2'));
+
+document.getElementById('mapContainer1').addEventListener('wheel', e => pan1.zoomWithWheel(e));
+document.getElementById('mapContainer2').addEventListener('wheel', e => pan2.zoomWithWheel(e));
 </script>
 
 </body>

@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Treasure Hunt</title>
 
+<!-- FAVICON -->
+<link rel="icon" type="image/png" href="images/favicon.png">
+
 <style>
 body {
   margin: 0;
@@ -13,6 +16,26 @@ body {
   color: white;
   text-align: center;
   padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* LOGO BACKGROUND */
+#bgLogo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  opacity: 0.08; /* très discret */
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* CONTENT ABOVE LOGO */
+.content {
+  position: relative;
+  z-index: 1;
 }
 
 h1 { font-size: 1.8em; margin-bottom: 30px; }
@@ -60,16 +83,10 @@ img {
   margin-top: 10px;
 }
 
-/* 🔥 AJOUT ZOOM SANS CASSER */
-.map-container {
-  overflow: hidden;
-  border-radius: 10px;
-  touch-action: none;
-}
-
 .success { color: #22c55e; margin-top: 15px; }
 .error { color: #ef4444; margin-top: 15px; }
 
+/* LANG BUTTONS */
 .lang-buttons {
   margin-top: 20px;
   display: flex;
@@ -92,6 +109,7 @@ img {
 #btn-nl { background:#f59e0b; }
 #btn-fr { background:#6366f1; }
 
+/* HINT BUTTONS */
 .hint-buttons {
   margin-top: 15px;
   display: flex;
@@ -108,7 +126,12 @@ img {
 
 <body>
 
-<h1>🧭 Treasure Hunt</h1>
+<!-- BACKGROUND LOGO -->
+<img src="images/favicon.png" id="bgLogo">
+
+<div class="content">
+
+<h1 id="title">🧭 Treasure Hunt</h1>
 
 <div class="input-box">
   <input type="text" id="codeInput" placeholder="Enter your code">
@@ -124,32 +147,22 @@ img {
   <button onclick="showHint(3)">Hint 3</button>
 </div>
 
-<!-- STEP 1 -->
 <div id="step1" class="card">
   <h2 id="step1Title">📍 Step 1</h2>
   <p id="step1Coords">48.8584, 2.2945</p>
-
-  <!-- 🔥 JUSTE WRAP IMAGE -->
-  <div class="map-container" id="mapContainer1">
-    <img id="mapImage1" src="images/step1-map.jpg">
-  </div>
+  <img id="mapImage1" src="images/step1-map.jpg">
 </div>
 
-<!-- STEP 2 -->
 <div id="step2" class="card">
   <h2 id="step2Title">📍 Step 2</h2>
   <p id="step2Coords">43.2965, 5.3698</p>
-
-  <div class="map-container" id="mapContainer2">
-    <img id="mapImage2" src="images/step2-map.jpg">
-  </div>
+  <img id="mapImage2" src="images/step2-map.jpg">
 </div>
 
-<!-- STEP 3 -->
 <div id="step3" class="card">
   <h2 id="step3Title">🏁 Final Step</h2>
   <div id="step3Congrats"></div>
-  <img src="images/step3-map.jpg">
+  <img id="mapImage3" src="images/step3-map.jpg">
 </div>
 
 <div class="lang-buttons">
@@ -162,41 +175,50 @@ img {
   <button id="btn-fr">Français</button>
 </div>
 
-<!-- PANZOOM -->
-<script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
+</div>
 
 <script>
-// 🔥 ZOOM (AJOUT SANS TOUCHER LE RESTE)
-const img1 = document.getElementById('mapImage1');
-const img2 = document.getElementById('mapImage2');
-
-if(img1){
-  const pan1 = Panzoom(img1, { maxScale: 4 });
-  document.getElementById('mapContainer1').addEventListener('wheel', pan1.zoomWithWheel);
-}
-
-if(img2){
-  const pan2 = Panzoom(img2, { maxScale: 4 });
-  document.getElementById('mapContainer2').addEventListener('wheel', pan2.zoomWithWheel);
-}
-
-// 🔽 TON CODE ORIGINAL (INCHANGÉ)
+// DATA (inchangé)
 const data = {
-  en:{hint:"Enter the code with only the first letter capitalized. The answer must be written in English.",hints:{1:"🍈 Green fruit",2:"🦈 Shark part",3:"🌊 Coral ecosystem"},messages:{wrong:"❌ Wrong code",step1:"Step 1 unlocked!",step2:"Step 2 unlocked!",step3:"🏆 Finished!"}},
-  fr:{hint:"Entrez le code avec seulement la première lettre en majuscule. La réponse doit être écrite en anglais.",hints:{1:"🍈 Fruit vert",2:"🦈 Partie du requin",3:"🌊 Écosystème marin"},messages:{wrong:"❌ Mauvais code",step1:"Étape 1 débloquée!",step2:"Étape 2 débloquée!",step3:"🏆 Terminé!"}},
-  es:{hint:"Introduce el código con solo la primera letra en mayúscula. La respuesta debe estar en inglés.",hints:{1:"🍈 Fruta verde",2:"🦈 Parte del tiburón",3:"🌊 Ecosistema marino"},messages:{wrong:"❌ Código incorrecto",step1:"Paso 1 desbloqueado!",step2:"Paso 2 desbloqueado!",step3:"🏆 Terminado!"}},
-  hr:{hint:"Unesite kod s velikim početnim slovom. Odgovor mora biti napisan na engleskom.",hints:{1:"🍈 Zeleno voće",2:"🦈 Dio morskog psa",3:"🌊 Morski ekosustav"},messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Gotovo!"}},
-  me:{hint:"Unesite kod sa velikim početnim slovom. Odgovor mora biti napisan na engleskom.",hints:{1:"🍈 Zeleno voće",2:"🦈 Dio ajkule",3:"🌊 Morski ekosistem"},messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Gotovo!"}},
-  de:{hint:"Geben Sie den Code mit großem Anfangsbuchstaben ein. Die Antwort muss auf Englisch geschrieben sein.",hints:{1:"🍈 Grünes Obst",2:"🦈 Teil eines Hais",3:"🌊 Meeresökosystem"},messages:{wrong:"❌ Falscher Code",step1:"Schritt 1 freigeschaltet!",step2:"Schritt 2 freigeschaltet!",step3:"🏆 Fertig!"}},
-  nl:{hint:"Voer de code in met een hoofdletter. Het antwoord moet in het Engels geschreven zijn.",hints:{1:"🍈 Groen fruit",2:"🦈 Deel van een haai",3:"🌊 Zee-ecosysteem"},messages:{wrong:"❌ Verkeerde code",step1:"Stap 1 ontgrendeld!",step2:"Stap 2 ontgrendeld!",step3:"🏆 Klaar!"}}
+  en:{ hint:"Enter the code with only the first letter capitalized. The answer must be written in English.",
+    hints:{1:"🍈 It's a fruit with green flesh",2:"🦈 It's on a shark",3:"🌊 Coral ecosystem"},
+    messages:{wrong:"❌ Wrong code",step1:"Step 1 unlocked!",step2:"Step 2 unlocked!",step3:"🏆 You finished!"}
+  },
+  fr:{ hint:"Entrez le code avec seulement la première lettre en majuscule. La réponse doit être écrite en anglais.",
+    hints:{1:"🍈 C'est un fruit vert",2:"🦈 Partie d’un requin",3:"🌊 Écosystème marin"},
+    messages:{wrong:"❌ Mauvais code",step1:"Étape 1 débloquée!",step2:"Étape 2 débloquée!",step3:"🏆 Terminé!"}
+  },
+  es:{ hint:"Introduce el código con solo la primera letra en mayúscula. La respuesta debe estar en inglés.",
+    hints:{1:"🍈 Fruta verde",2:"🦈 Parte del tiburón",3:"🌊 Ecosistema marino"},
+    messages:{wrong:"❌ Código incorrecto",step1:"Paso 1 desbloqueado!",step2:"Paso 2 desbloqueado!",step3:"🏆 Terminado!"}
+  },
+  hr:{ hint:"Unesite kod s samo prvim velikim slovom. Odgovor mora biti napisan na engleskom.",
+    hints:{1:"🍈 Zeleno voće",2:"🦈 Dio morskog psa",3:"🌊 Morski ekosistem"},
+    messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Završeno!"}
+  },
+  me:{ hint:"Unesite kod samo s prvim velikim slovom. Odgovor mora biti na engleskom.",
+    hints:{1:"🍈 Zeleno voće",2:"🦈 Dio ajkule",3:"🌊 Morski ekosistem"},
+    messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Završeno!"}
+  },
+  de:{ hint:"Geben Sie den Code mit nur dem ersten Großbuchstaben ein. Die Antwort muss auf Englisch sein.",
+    hints:{1:"🍈 Grünes Obst",2:"🦈 Teil eines Hais",3:"🌊 Meeresökosystem"},
+    messages:{wrong:"❌ Falscher Code",step1:"Schritt 1 freigeschaltet!",step2:"Schritt 2 freigeschaltet!",step3:"🏆 Fertig!"}
+  },
+  nl:{ hint:"Voer de code in met alleen de eerste letter als hoofdletter. Het antwoord moet in het Engels zijn.",
+    hints:{1:"🍈 Groene vrucht",2:"🦈 Onderdeel van een haai",3:"🌊 Zee-ecosysteem"},
+    messages:{wrong:"❌ Verkeerde code",step1:"Stap 1 ontgrendeld!",step2:"Stap 2 ontgrendeld!",step3:"🏆 Klaar!"}
+  }
 };
 
 let currentLang = "en";
 
 document.querySelectorAll(".lang-buttons button").forEach(btn=>{
   btn.onclick = () => {
-    currentLang = btn.id.split("-")[1];
-    updateLang();
+    const lang = btn.id.replace("btn-","");
+    if(data[lang]){
+      currentLang = lang;
+      updateLang();
+    }
   };
 });
 

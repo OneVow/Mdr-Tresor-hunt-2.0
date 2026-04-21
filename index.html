@@ -63,7 +63,6 @@ img {
 .success { color: #22c55e; margin-top: 15px; }
 .error { color: #ef4444; margin-top: 15px; }
 
-/* LANG BUTTONS */
 .lang-buttons {
   margin-top: 20px;
   display: flex;
@@ -86,7 +85,6 @@ img {
 #btn-nl { background:#f59e0b; }
 #btn-fr { background:#6366f1; }
 
-/* HINT BUTTONS */
 .hint-buttons {
   margin-top: 15px;
   display: flex;
@@ -98,13 +96,12 @@ img {
 .hint-buttons button {
   background: #fbbf24;
 }
-
 </style>
 </head>
 
 <body>
 
-<h1 id="title">🧭 Treasure Hunt</h1>
+<h1>🧭 Treasure Hunt</h1>
 
 <div class="input-box">
   <input type="text" id="codeInput" placeholder="Enter your code">
@@ -114,33 +111,30 @@ img {
 <p id="hint"></p>
 <div id="message"></div>
 
-<!-- 3 HINT BUTTONS -->
 <div class="hint-buttons">
   <button onclick="showHint(1)">Hint 1</button>
   <button onclick="showHint(2)">Hint 2</button>
   <button onclick="showHint(3)">Hint 3</button>
 </div>
 
-<!-- Steps -->
 <div id="step1" class="card">
-  <h2 id="step1Title">📍 Step 1</h2>
-  <p id="step1Coords">48.8584, 2.2945</p>
+  <h2>📍 Step 1</h2>
+  <p>48.8584, 2.2945</p>
   <img src="images/step1-map.jpg">
 </div>
 
 <div id="step2" class="card">
-  <h2 id="step2Title">📍 Step 2</h2>
-  <p id="step2Coords">43.2965, 5.3698</p>
+  <h2>📍 Step 2</h2>
+  <p>43.2965, 5.3698</p>
   <img src="images/step2-map.jpg">
 </div>
 
 <div id="step3" class="card">
-  <h2 id="step3Title">🏁 Final Step</h2>
+  <h2>🏁 Final Step</h2>
   <div id="step3Congrats"></div>
   <img src="images/step3-map.jpg">
 </div>
 
-<!-- LANGUAGES FULL NAMES -->
 <div class="lang-buttons">
   <button id="btn-en">English</button>
   <button id="btn-hr">Hrvatski</button>
@@ -154,52 +148,44 @@ img {
 <script>
 const data = {
   en:{
-    hint:"Enter the code with only the first letter capitalized. The answers are in English.",
-    hints:{
-      1:"🍈 It's a fruit with green flesh",
-      2:"🦈 It's on a shark",
-      3:"🌊 Coral ecosystem"
-    },
-    messages:{
-      wrong:"❌ Wrong code",
-      step1:"Step 1 unlocked!",
-      step2:"Step 2 unlocked!",
-      step3:"🏆 You finished!"
-    }
+    hint:"Enter the code with only the first letter capitalized.",
+    hints:{1:"🍈 Green fruit",2:"🦈 Shark part",3:"🌊 Coral ecosystem"},
+    messages:{wrong:"❌ Wrong code",step1:"Step 1 unlocked!",step2:"Step 2 unlocked!",step3:"🏆 Finished!"}
   },
   fr:{
     hint:"Entrez le code avec seulement la première lettre en majuscule.",
-    hints:{
-      1:"🍈 C'est un fruit vert",
-      2:"🦈 Partie d’un requin",
-      3:"🌊 Écosystème marin"
-    },
-    messages:{
-      wrong:"❌ Mauvais code",
-      step1:"Étape 1 débloquée!",
-      step2:"Étape 2 débloquée!",
-      step3:"🏆 Terminé!"
-    }
+    hints:{1:"🍈 Fruit vert",2:"🦈 Partie du requin",3:"🌊 Écosystème marin"},
+    messages:{wrong:"❌ Mauvais code",step1:"Étape 1 débloquée!",step2:"Étape 2 débloquée!",step3:"🏆 Terminé!"}
   },
   es:{
     hint:"Introduce el código con solo la primera letra en mayúscula.",
-    hints:{
-      1:"🍈 Fruta verde",
-      2:"🦈 Parte del tiburón",
-      3:"🌊 Ecosistema marino"
-    },
-    messages:{
-      wrong:"❌ Código incorrecto",
-      step1:"Paso 1 desbloqueado!",
-      step2:"Paso 2 desbloqueado!",
-      step3:"🏆 Terminado!"
-    }
+    hints:{1:"🍈 Fruta verde",2:"🦈 Parte del tiburón",3:"🌊 Ecosistema marino"},
+    messages:{wrong:"❌ Código incorrecto",step1:"Paso 1 desbloqueado!",step2:"Paso 2 desbloqueado!",step3:"🏆 Terminado!"}
+  },
+  hr:{
+    hint:"Unesite kod s velikim početnim slovom.",
+    hints:{1:"🍈 Zeleno voće",2:"🦈 Dio morskog psa",3:"🌊 Morski ekosustav"},
+    messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Gotovo!"}
+  },
+  me:{
+    hint:"Unesite kod sa velikim početnim slovom.",
+    hints:{1:"🍈 Zeleno voće",2:"🦈 Dio ajkule",3:"🌊 Morski ekosistem"},
+    messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Gotovo!"}
+  },
+  de:{
+    hint:"Geben Sie den Code mit großem Anfangsbuchstaben ein.",
+    hints:{1:"🍈 Grünes Obst",2:"🦈 Teil eines Hais",3:"🌊 Meeresökosystem"},
+    messages:{wrong:"❌ Falscher Code",step1:"Schritt 1 freigeschaltet!",step2:"Schritt 2 freigeschaltet!",step3:"🏆 Fertig!"}
+  },
+  nl:{
+    hint:"Voer de code in met een hoofdletter.",
+    hints:{1:"🍈 Groen fruit",2:"🦈 Deel van een haai",3:"🌊 Zee-ecosysteem"},
+    messages:{wrong:"❌ Verkeerde code",step1:"Stap 1 ontgrendeld!",step2:"Stap 2 ontgrendeld!",step3:"🏆 Klaar!"}
   }
 };
 
 let currentLang = "en";
 
-// LANGUAGE SWITCH
 document.querySelectorAll(".lang-buttons button").forEach(btn=>{
   btn.onclick = () => {
     currentLang = btn.id.split("-")[1];
@@ -211,12 +197,10 @@ function updateLang(){
   document.getElementById("hint").innerText = data[currentLang].hint;
 }
 
-// HINTS
 function showHint(step){
   alert(data[currentLang].hints[step]);
 }
 
-// SUBMIT
 document.getElementById("submitBtn").onclick = () => {
   const code = document.getElementById("codeInput").value.trim();
   const msg = document.getElementById("message");
@@ -238,7 +222,6 @@ document.getElementById("submitBtn").onclick = () => {
   }
 };
 
-// INIT
 updateLang();
 </script>
 

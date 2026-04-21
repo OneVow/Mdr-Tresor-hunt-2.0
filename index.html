@@ -1,122 +1,43 @@
 <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+
 // Multilingual data
 const data = {
   en: {
-    hint: "Enter the code with only the first letter capitalized. The answers are in english.",
+    hint: "Enter the code with only the first letter capitalized.",
     hints: {
       step1: "🍈 It's a fruit with a green inside...",
       step2: "🦈 Found on sharks...",
       step3: "🌊 Colorful underwater ecosystem..."
     },
     messages: {
-      wrong: "❌ Wrong code, try again.",
+      wrong: "❌ Wrong code",
       step1: "Step 1 unlocked!",
       step2: "Step 2 unlocked!",
-      step3: "🏆 Congratulations! You finished the game!"
-    }
-  },
-  hr: {
-    hint: "Unesite kod s samo prvim velikim slovom. Odgovori su na engleskom.",
-    hints: {
-      step1: "🍈 Voće sa zelenom unutrašnjosti...",
-      step2: "🦈 Nalazi se na ajkulama...",
-      step3: "🌊 Šareni podvodni ekosistem..."
-    },
-    messages: {
-      wrong: "❌ Pogrešan kod, pokušajte ponovno.",
-      step1: "Korak 1 otključan!",
-      step2: "Korak 2 otključan!",
-      step3: "🏆 Čestitamo! Završili ste igru!"
-    }
-  },
-  me: {
-    hint: "Unesite kod samo s prvim velikim slovom. Odgovori su na engleskom.",
-    hints: {
-      step1: "🍈 Voće sa zelenom unutrašnjosti...",
-      step2: "🦈 Nalazi se na ajkulama...",
-      step3: "🌊 Šareni podvodni ekosistem..."
-    },
-    messages: {
-      wrong: "❌ Pogrešan kod, pokušajte opet.",
-      step1: "Korak 1 otključan!",
-      step2: "Korak 2 otključan!",
-      step3: "🏆 Čestitamo! Završili ste igru!"
-    }
-  },
-  es: {
-    hint: "Introduce el código con solo la primera letra en mayúscula. Las respuestas están en inglés.",
-    hints: {
-      step1: "🍈 Es una fruta verde por dentro...",
-      step2: "🦈 Se encuentra en los tiburones...",
-      step3: "🌊 Ecosistema submarino colorido..."
-    },
-    messages: {
-      wrong: "❌ Código incorrecto, inténtalo de nuevo.",
-      step1: "¡Paso 1 desbloqueado!",
-      step2: "¡Paso 2 desbloqueado!",
-      step3: "🏆 ¡Felicidades! ¡Has terminado el juego!"
-    }
-  },
-  de: {
-    hint: "Geben Sie den Code ein, wobei nur der erste Buchstabe groß ist. Die Antworten sind auf Englisch.",
-    hints: {
-      step1: "🍈 Eine Frucht mit grünem Inneren...",
-      step2: "🦈 Befindet sich bei Haien...",
-      step3: "🌊 Buntes Unterwasser-Ökosystem..."
-    },
-    messages: {
-      wrong: "❌ Falscher Code, versuche es erneut.",
-      step1: "Schritt 1 freigeschaltet!",
-      step2: "Schritt 2 freigeschaltet!",
-      step3: "🏆 Herzlichen Glückwunsch!"
-    }
-  },
-  nl: {
-    hint: "Voer de code in met alleen de eerste letter als hoofdletter.",
-    hints: {
-      step1: "🍈 Een fruit met groene binnenkant...",
-      step2: "🦈 Te vinden bij haaien...",
-      step3: "🌊 Kleurrijk onderwater ecosysteem..."
-    },
-    messages: {
-      wrong: "❌ Verkeerde code.",
-      step1: "Stap 1 ontgrendeld!",
-      step2: "Stap 2 ontgrendeld!",
-      step3: "🏆 Gefeliciteerd!"
-    }
-  },
-  fr: {
-    hint: "Entrez le code avec seulement la première lettre en majuscule.",
-    hints: {
-      step1: "🍈 C’est un fruit vert à l’intérieur...",
-      step2: "🦈 On le trouve sur les requins...",
-      step3: "🌊 Écosystème marin coloré..."
-    },
-    messages: {
-      wrong: "❌ Mauvais code.",
-      step1: "Étape 1 débloquée!",
-      step2: "Étape 2 débloquée!",
-      step3: "🏆 Félicitations!"
+      step3: "🏆 Finished!"
     }
   }
 };
 
 let currentLang = 'en';
 
-// Language buttons
+// Buttons
 ['en','hr','me','es','de','nl','fr'].forEach(lang => {
-  document.getElementById('btn-'+lang).addEventListener('click', () => setLanguage(lang));
+  const btn = document.getElementById('btn-'+lang);
+  if(btn){
+    btn.addEventListener('click', () => setLanguage(lang));
+  }
 });
 
 function setLanguage(lang) {
   currentLang = lang;
-  document.getElementById('hint').innerText = data[lang].hint;
+  document.getElementById('hint').innerText = data[lang]?.hint || data.en.hint;
 }
 
-// HINT SYSTEM
-function showHint(step) {
+// HINTS
+window.showHint = function(step) {
 
   if (step === 2 && document.getElementById("step1").style.display !== "block") {
     alert("Finish step 1 first!");
@@ -128,36 +49,44 @@ function showHint(step) {
     return;
   }
 
-  let hintText = data[currentLang].hints["step" + step];
-  alert(hintText);
-}
+  alert(data[currentLang].hints["step"+step]);
+};
 
-// CODE CHECK
+// SUBMIT
 document.getElementById('submitBtn').addEventListener('click', () => {
   const code = document.getElementById("codeInput").value.trim();
   const msg = document.getElementById("message");
 
   if (code === "Melon") {
     document.getElementById("step1").style.display = "block";
-    msg.innerHTML = "<div class='success'>" + data[currentLang].messages.step1 + "</div>";
+    msg.innerHTML = "<div class='success'>Step 1 unlocked!</div>";
 
   } else if (code === "Dorsal fin") {
     document.getElementById("step2").style.display = "block";
-    msg.innerHTML = "<div class='success'>" + data[currentLang].messages.step2 + "</div>";
+    msg.innerHTML = "<div class='success'>Step 2 unlocked!</div>";
 
   } else if (code === "Reef") {
     document.getElementById("step3").style.display = "block";
-    document.getElementById("step3Congrats").innerText = data[currentLang].messages.step3;
+    document.getElementById("step3Congrats").innerText = "🏆 Finished!";
 
   } else {
-    msg.innerHTML = "<div class='error'>" + data[currentLang].messages.wrong + "</div>";
+    msg.innerHTML = "<div class='error'>Wrong code</div>";
   }
 });
 
-// PANZOOM
-const pan1 = Panzoom(document.getElementById('mapImage1'), { maxScale: 3 });
-const pan2 = Panzoom(document.getElementById('mapImage2'), { maxScale: 3 });
+// PANZOOM (safe)
+const img1 = document.getElementById('mapImage1');
+const img2 = document.getElementById('mapImage2');
 
-document.getElementById('mapContainer1').addEventListener('wheel', e => pan1.zoomWithWheel(e));
-document.getElementById('mapContainer2').addEventListener('wheel', e => pan2.zoomWithWheel(e));
+if(img1){
+  const pan1 = Panzoom(img1, { maxScale: 3 });
+  document.getElementById('mapContainer1').addEventListener('wheel', e => pan1.zoomWithWheel(e));
+}
+
+if(img2){
+  const pan2 = Panzoom(img2, { maxScale: 3 });
+  document.getElementById('mapContainer2').addEventListener('wheel', e => pan2.zoomWithWheel(e));
+}
+
+});
 </script>

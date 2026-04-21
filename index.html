@@ -144,4 +144,95 @@ img { width: 100%; border-radius: 10px; margin-top: 10px; }
 <img src="images/favicon.png" id="bottomLogo">
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
+
+<script>
+// Multilingual data
+const data = {
+  en: {
+    hint: "Enter the code with only the first letter capitalized. The answers are in english.",
+    hints: { step: "🔍 Think about fruits and the ocean… each step has a clue!" },
+    messages: { wrong: "❌ Wrong code, try again.", step1: "Step 1 unlocked!", step2: "Step 2 unlocked!", step3: "🏆 Congratulations! You finished the game!" }
+  },
+  hr: {
+    hint: "Unesite kod s samo prvim velikim slovom. Odgovori su na engleskom.",
+    hints: { step: "🔍 Razmislite o voću i oceanu… svaki korak ima trag!" },
+    messages: { wrong: "❌ Pogrešan kod, pokušajte ponovno.", step1: "Korak 1 otključan!", step2: "Korak 2 otključan!", step3: "🏆 Čestitamo! Završili ste igru!" }
+  },
+  me: {
+    hint: "Unesite kod samo s prvim velikim slovom. Odgovori su na engleskom.",
+    hints: { step: "🔍 Razmislite o voću i oceanu… svaki korak ima trag!" },
+    messages: { wrong: "❌ Pogrešan kod, pokušajte opet.", step1: "Korak 1 otključan!", step2: "Korak 2 otključan!", step3: "🏆 Čestitamo! Završili ste igru!" }
+  },
+  es: {
+    hint: "Introduce el código con solo la primera letra en mayúscula. Las respuestas están en inglés.",
+    hints: { step: "🔍 Piensa en frutas y el océano… cada paso tiene una pista!" },
+    messages: { wrong: "❌ Código incorrecto, inténtalo de nuevo.", step1: "¡Paso 1 desbloqueado!", step2: "¡Paso 2 desbloqueado!", step3: "🏆 ¡Felicidades! ¡Has terminado el juego!" }
+  },
+  de: {
+    hint: "Geben Sie den Code ein, wobei nur der erste Buchstabe groß ist. Die Antworten sind auf Englisch.",
+    hints: { step: "🔍 Denke an Früchte und das Meer… jeder Schritt hat einen Hinweis!" },
+    messages: { wrong: "❌ Falscher Code, versuche es erneut.", step1: "Schritt 1 freigeschaltet!", step2: "Schritt 2 freigeschaltet!", step3: "🏆 Herzlichen Glückwunsch! Sie haben das Spiel beendet!" }
+  },
+  nl: {
+    hint: "Voer de code in met alleen de eerste letter als hoofdletter. De antwoorden zijn in het Engels.",
+    hints: { step: "🔍 Denk aan fruit en de oceaan… elke stap heeft een aanwijzing!" },
+    messages: { wrong: "❌ Verkeerde code, probeer het opnieuw.", step1: "Stap 1 ontgrendeld!", step2: "Stap 2 ontgrendeld!", step3: "🏆 Gefeliciteerd! Je hebt het spel voltooid!" }
+  },
+  fr: {
+    hint: "Entrez le code avec seulement la première lettre en majuscule. Les réponses sont en anglais.",
+    hints: { step: "🔍 Pensez aux fruits et à l'océan… chaque étape a un indice!" },
+    messages: { wrong: "❌ Code incorrect, essayez encore.", step1: "Étape 1 débloquée!", step2: "Étape 2 débloquée!", step3: "🏆 Félicitations! Vous avez terminé le jeu!" }
+  }
+};
+
+let currentLang = 'en';
+
+// Language buttons
+['en','hr','me','es','de','nl','fr'].forEach(lang => {
+  document.getElementById('btn-'+lang).addEventListener('click', () => setLanguage(lang));
+});
+
+// Set language
+function setLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('hint').innerText = data[lang].hint;
+}
+
+// Check codes
+document.getElementById('submitBtn').addEventListener('click', () => {
+  const code = document.getElementById("codeInput").value.trim();
+  const msg = document.getElementById("message");
+
+  if (code === "Melon") {
+    document.getElementById("step1").style.display = "block";
+    msg.innerHTML = "<div class='success'>" + data[currentLang].messages.step1 + "</div>";
+
+  } else if (code === "Dorsal fin") {
+    document.getElementById("step2").style.display = "block";
+    msg.innerHTML = "<div class='success'>" + data[currentLang].messages.step2 + "</div>";
+
+  } else if (code === "Reef") {
+    document.getElementById("step3").style.display = "block";
+    document.getElementById("step3Congrats").innerText = data[currentLang].messages.step3;
+
+  } else {
+    msg.innerHTML = "<div class='error'>" + data[currentLang].messages.wrong + "</div>";
+  }
+});
+
+// Hint button
+document.getElementById('hintBtn').addEventListener('click', () => {
+  if(confirm("Are you sure you want to see the hint?")) {
+    alert(data[currentLang].hints.step);
+  }
+});
+
+// Panzoom
+const pan1 = Panzoom(document.getElementById('mapImage1'), { maxScale: 3 });
+const pan2 = Panzoom(document.getElementById('mapImage2'), { maxScale: 3 });
+
+document.getElementById('mapContainer1').addEventListener('wheel', e => pan1.zoomWithWheel(e));
+document.getElementById('mapContainer2').addEventListener('wheel', e => pan2.zoomWithWheel(e));
+</script>
 </html>

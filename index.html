@@ -17,7 +17,12 @@ body {
 
 h1 { font-size: 1.8em; margin-bottom: 30px; }
 
-.input-box { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.input-box {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
 input {
   padding: 14px;
@@ -50,27 +55,14 @@ button:hover { transform: scale(1.05); }
   animation: fadeIn 0.5s ease;
 }
 
-img { width: 100%; border-radius: 10px; margin-top: 10px; }
-
-.success { color: #22c55e; margin-top: 15px; animation: pop 0.3s ease; }
-.error { color: #ef4444; margin-top: 15px; animation: shake 0.3s ease; }
-
-@keyframes fadeIn {
-  from {opacity:0; transform: translateY(10px);}
-  to {opacity:1; transform: translateY(0);}
+img {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
 }
 
-@keyframes pop {
-  0%{transform:scale(0.8);}
-  100%{transform:scale(1);}
-}
-
-@keyframes shake {
-  0%,100%{transform:translateX(0);}
-  25%{transform:translateX(-5px);}
-  50%{transform:translateX(5px);}
-  75%{transform:translateX(-5px);}
-}
+.success { color: #22c55e; margin-top: 15px; }
+.error { color: #ef4444; margin-top: 15px; }
 
 .lang-buttons {
   margin-top: 20px;
@@ -81,175 +73,134 @@ img { width: 100%; border-radius: 10px; margin-top: 10px; }
 }
 
 .lang-buttons button {
-  font-size: 12px; 
-  padding: 8px 12px; 
+  font-size: 12px;
+  padding: 8px 12px;
   border-radius: 8px;
-  flex: 1 1 auto;
-  max-width: 120px;
-  min-width: 60px;
-  white-space: nowrap;
 }
 
-/* COLORS (UNCHANGED) */
-#btn-en { background-color: #3b82f6; color: white; }
-#btn-hr { background-color: #f97316; color: white; }
-#btn-me { background-color: #10b981; color: white; }
-#btn-es { background-color: #ef4444; color: white; }
-#btn-de { background-color: #8b5cf6; color: white; }
-#btn-nl { background-color: #f59e0b; color: white; }
-#btn-fr { background-color: #6366f1; color: white; }
+#btn-en { background:#3b82f6; }
+#btn-hr { background:#f97316; }
+#btn-me { background:#10b981; }
+#btn-es { background:#ef4444; }
+#btn-de { background:#8b5cf6; }
+#btn-nl { background:#f59e0b; }
+#btn-fr { background:#6366f1; }
 
-#btn-en:hover { background-color: #2563eb; }
-#btn-hr:hover { background-color: #ea580c; }
-#btn-me:hover { background-color: #059669; }
-#btn-es:hover { background-color: #dc2626; }
-#btn-de:hover { background-color: #7c3aed; }
-#btn-nl:hover { background-color: #ff9a00; }
-#btn-fr:hover { background-color: #4f46e5; }
+#hintBtn { background:#fbbf24; }
 
-.hint-buttons {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.hint-buttons button {
-  background-color: #fbbf24;
-  color: white;
-}
-
-#mapContainer1, #mapContainer2 {
-  width: 100%;
-  max-width: 400px;
-  height: 200px;
-  overflow: hidden;
-  border-radius: 10px;
-  margin: auto;
-  touch-action: none;
-}
 </style>
 </head>
 
 <body>
 
-<h1 id="title">🧭 Treasure Hunt</h1>
+<h1>🧭 Treasure Hunt</h1>
 
 <div class="input-box">
-  <input type="text" id="codeInput" placeholder="Enter your code">
+  <input type="text" id="codeInput">
   <button id="submitBtn">Submit</button>
+  <button onclick="showHint()">Hint</button>
 </div>
 
-<!-- 3 HINT BUTTONS -->
-<div class="hint-buttons">
-  <button onclick="showHint(1)">Hint 1</button>
-  <button onclick="showHint(2)">Hint 2</button>
-  <button onclick="showHint(3)">Hint 3</button>
-</div>
-
-<p id="hint">Enter the code with only the first letter capitalized. The answers are in english.</p>
+<p id="hint"></p>
 <div id="message"></div>
 
-<!-- Step 1 -->
 <div id="step1" class="card">
-  <h2 id="step1Title">📍 Step 1</h2>
-  <p id="step1Coords">48.8584, 2.2945</p>
+  <h2 id="step1Title"></h2>
+  <p id="step1Coords"></p>
   <div id="mapContainer1">
     <img id="mapImage1" src="images/step1-map.jpg">
   </div>
 </div>
 
-<!-- Step 2 -->
 <div id="step2" class="card">
-  <h2 id="step2Title">📍 Step 2</h2>
-  <p id="step2Coords">43.2965, 5.3698</p>
+  <h2 id="step2Title"></h2>
+  <p id="step2Coords"></p>
   <div id="mapContainer2">
     <img id="mapImage2" src="images/step2-map.jpg">
   </div>
 </div>
 
-<!-- Step 3 -->
 <div id="step3" class="card">
-  <h2 id="step3Title">🏁 Final Step</h2>
-  <div id="step3Congrats" style="font-size: 2em; margin-top: 20px; color: #22c55e;"></div>
+  <h2 id="step3Title"></h2>
+  <div id="step3Congrats"></div>
   <img id="step3Img" src="images/step3-map.jpg">
 </div>
 
-<!-- LANGUAGES -->
 <div class="lang-buttons">
-  <button id="btn-en">English</button>
-  <button id="btn-hr">Hrvatski</button>
-  <button id="btn-me">Crnogorski</button>
-  <button id="btn-es">Español</button>
-  <button id="btn-de">Deutsch</button>
-  <button id="btn-nl">Nederlands</button>
-  <button id="btn-fr">Français</button>
+  <button id="btn-en">EN</button>
+  <button id="btn-hr">HR</button>
+  <button id="btn-me">ME</button>
+  <button id="btn-es">ES</button>
+  <button id="btn-de">DE</button>
+  <button id="btn-nl">NL</button>
+  <button id="btn-fr">FR</button>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
-
 <script>
-let currentLang = "en";
-
-const hints = {
-  step1: "🍈 Fruit",
-  step2: "🦈 Shark",
-  step3: "🌊 Ocean"
+const data = {
+  en:{
+    hint:"Enter the code with only the first letter capitalized.",
+    hints:["🍈 Green fruit","🦈 Shark part","🌊 Coral ecosystem"],
+    wrong:"Wrong code",
+    step1:"Step 1 unlocked!",
+    step2:"Step 2 unlocked!",
+    step3:"Finished!"
+  },
+  fr:{
+    hint:"Entrez le code avec une majuscule.",
+    hints:["🍈 Fruit vert","🦈 Partie du requin","🌊 Écosystème marin"],
+    wrong:"Mauvais code",
+    step1:"Étape 1 débloquée!",
+    step2:"Étape 2 débloquée!",
+    step3:"Fini!"
+  }
 };
 
-// language buttons (safe)
-['en','hr','me','es','de','nl','fr'].forEach(lang => {
-  const btn = document.getElementById('btn-'+lang);
-  if(btn){
-    btn.onclick = () => currentLang = lang;
-  }
+let lang="en";
+let currentStep=0;
+
+// language buttons
+document.querySelectorAll(".lang-buttons button").forEach(btn=>{
+  btn.onclick=()=>{lang=btn.id.split("-")[1]; updateLang();}
 });
 
-// hints system
-function showHint(step){
+function updateLang(){
+  document.getElementById("hint").innerText=data[lang].hint;
+}
 
-  if(step === 2 && document.getElementById("step1").style.display !== "block"){
-    alert("Finish step 1 first!");
-    return;
-  }
+updateLang();
 
-  if(step === 3 && document.getElementById("step2").style.display !== "block"){
-    alert("Finish step 2 first!");
-    return;
-  }
-
-  alert(hints["step"+step]);
+// hint system
+function showHint(){
+  if(currentStep===0){ alert(data[lang].hints[0]); }
+  else if(currentStep===1){ alert(data[lang].hints[1]); }
+  else if(currentStep>=2){ alert(data[lang].hints[2]); }
 }
 
 // submit
-document.getElementById("submitBtn").onclick = function(){
-  const code = document.getElementById("codeInput").value.trim();
-  const msg = document.getElementById("message");
+document.getElementById("submitBtn").onclick=()=>{
+  let code=document.getElementById("codeInput").value.trim();
+  let msg=document.getElementById("message");
 
-  if(code === "Melon"){
-    document.getElementById("step1").style.display = "block";
-    msg.innerHTML = "<div class='success'>Step 1 unlocked!</div>";
-
-  } else if(code === "Dorsal fin"){
-    document.getElementById("step2").style.display = "block";
-    msg.innerHTML = "<div class='success'>Step 2 unlocked!</div>";
-
-  } else if(code === "Reef"){
-    document.getElementById("step3").style.display = "block";
-    document.getElementById("step3Congrats").innerText = "🏆 Finished!";
-
-  } else {
-    msg.innerHTML = "<div class='error'>❌ Wrong code</div>";
+  if(code==="Melon"){
+    document.getElementById("step1").style.display="block";
+    msg.innerHTML="<div class='success'>"+data[lang].step1+"</div>";
+    currentStep=1;
+  }
+  else if(code==="Dorsal fin"){
+    document.getElementById("step2").style.display="block";
+    msg.innerHTML="<div class='success'>"+data[lang].step2+"</div>";
+    currentStep=2;
+  }
+  else if(code==="Reef"){
+    document.getElementById("step3").style.display="block";
+    document.getElementById("step3Congrats").innerText=data[lang].step3;
+    currentStep=3;
+  }
+  else{
+    msg.innerHTML="<div class='error'>"+data[lang].wrong+"</div>";
   }
 };
-
-// panzoom
-const pan1 = Panzoom(document.getElementById('mapImage1'));
-const pan2 = Panzoom(document.getElementById('mapImage2'));
-
-document.getElementById('mapContainer1').addEventListener('wheel', e => pan1.zoomWithWheel(e));
-document.getElementById('mapContainer2').addEventListener('wheel', e => pan2.zoomWithWheel(e));
 </script>
 
 </body>

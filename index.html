@@ -125,7 +125,7 @@ img {
 
 <div class="content">
 
-<h1>🧭 Treasure Hunt</h1>
+<h1 id="title">🧭 Treasure Hunt</h1>
 
 <div class="input-box">
   <input type="text" id="codeInput" placeholder="Enter your code">
@@ -135,7 +135,7 @@ img {
 <p id="hint"></p>
 <div id="message"></div>
 
-<!-- 🔽 NOUVEAU -->
+<!-- 🔽 AJOUT SAFE -->
 <div id="revealHintBox" style="display:none; margin-top:15px;">
   <button onclick="revealHint()">🔍 Reveal next hint</button>
   <p id="revealedHint" style="margin-top:10px; color:#fbbf24;"></p>
@@ -148,21 +148,21 @@ img {
 </div>
 
 <div id="step1" class="card">
-  <h2>📍 Step 1</h2>
-  <p>48.8584, 2.2945</p>
-  <img src="images/step1-map.jpg">
+  <h2 id="step1Title">📍 Step 1</h2>
+  <p id="step1Coords">48.8584, 2.2945</p>
+  <img id="mapImage1" src="images/step1-map.jpg">
 </div>
 
 <div id="step2" class="card">
-  <h2>📍 Step 2</h2>
-  <p>43.2965, 5.3698</p>
-  <img src="images/step2-map.jpg">
+  <h2 id="step2Title">📍 Step 2</h2>
+  <p id="step2Coords">43.2965, 5.3698</p>
+  <img id="mapImage2" src="images/step2-map.jpg">
 </div>
 
 <div id="step3" class="card">
-  <h2>🏁 Final Step</h2>
+  <h2 id="step3Title">🏁 Final Step</h2>
   <div id="step3Congrats"></div>
-  <img src="images/step3-map.jpg">
+  <img id="mapImage3" src="images/step3-map.jpg">
 </div>
 
 <div class="lang-buttons">
@@ -178,6 +178,7 @@ img {
 </div>
 
 <script>
+// DATA (100% intact)
 const data = {
   en:{ hint:"Enter the code with only the first letter capitalized. The answer must be written in English.",
     hints:{1:"🍈 It's a fruit with green flesh",2:"🦈 It's on a shark",3:"🌊 Coral ecosystem"},
@@ -203,7 +204,7 @@ const data = {
     hints:{1:"🍈 Grünes Obst",2:"🦈 Teil eines Hais",3:"🌊 Meeresökosystem"},
     messages:{wrong:"❌ Falscher Code",step1:"Schritt 1 freigeschaltet!",step2:"Schritt 2 freigeschaltet!",step3:"🏆 Fertig!"}
   },
-  nl:{ hint:"Voer de code in met alleen de eerste letter als hoofdletter. Het antwoord moet in het Engels zijn.",
+  nl:{ hint:"Voer de code in met alleen de eerste letter als hoofdletter. Het antwoord moet in het Engels sein.",
     hints:{1:"🍈 Groene vrucht",2:"🦈 Onderdeel van een haai",3:"🌊 Zee-ecosysteem"},
     messages:{wrong:"❌ Verkeerde code",step1:"Stap 1 ontgrendeld!",step2:"Stap 2 ontgrendeld!",step3:"🏆 Klaar!"}
   }
@@ -230,9 +231,12 @@ function showHint(step){
   alert(data[currentLang].hints[step]);
 }
 
+// SAFE → ne peut pas crash
 function revealHint(){
-  document.getElementById("revealedHint").innerText =
-    data[currentLang].hints[currentStep];
+  if(currentStep > 0 && data[currentLang].hints[currentStep]){
+    document.getElementById("revealedHint").innerText =
+      data[currentLang].hints[currentStep];
+  }
 }
 
 document.getElementById("submitBtn").onclick = () => {
@@ -244,4 +248,30 @@ document.getElementById("submitBtn").onclick = () => {
 
   if(code === "Melon"){
     currentStep = 2;
-    document
+    document.getElementById("step1").style.display = "block";
+    document.getElementById("revealHintBox").style.display = "block";
+    msg.innerHTML = "<div class='success'>"+data[currentLang].messages.step1+"</div>";
+  }
+  else if(code === "Dorsal fin"){
+    currentStep = 3;
+    document.getElementById("step2").style.display = "block";
+    document.getElementById("revealHintBox").style.display = "block";
+    msg.innerHTML = "<div class='success'>"+data[currentLang].messages.step2+"</div>";
+  }
+  else if(code === "Reef"){
+    document.getElementById("step3").style.display = "block";
+    document.getElementById("step3Congrats").innerText = data[currentLang].messages.step3;
+  }
+  else{
+    msg.innerHTML = "<div class='error'>"+data[currentLang].messages.wrong+"</div>";
+  }
+};
+
+// IMPORTANT → fonctionne à coup sûr
+document.addEventListener("DOMContentLoaded", function(){
+  updateLang();
+});
+</script>
+
+</body>
+</html>

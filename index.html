@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Treasure Hunt</title>
 
-<!-- FAVICON -->
 <link rel="icon" type="image/png" href="images/favicon.png">
 
 <style>
+/* (RIEN CHANGÉ ICI) */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -20,7 +20,6 @@ body {
   overflow-x: hidden;
 }
 
-/* LOGO BACKGROUND */
 #bgLogo {
   position: fixed;
   top: 50%;
@@ -32,7 +31,6 @@ body {
   pointer-events: none;
 }
 
-/* CONTENT ABOVE LOGO */
 .content {
   position: relative;
   z-index: 1;
@@ -86,7 +84,6 @@ img {
 .success { color: #22c55e; margin-top: 15px; }
 .error { color: #ef4444; margin-top: 15px; }
 
-/* LANG BUTTONS */
 .lang-buttons {
   margin-top: 20px;
   display: flex;
@@ -109,7 +106,6 @@ img {
 #btn-nl { background:#f59e0b; }
 #btn-fr { background:#6366f1; }
 
-/* HINT BUTTONS */
 .hint-buttons {
   margin-top: 15px;
   display: flex;
@@ -126,7 +122,6 @@ img {
 
 <body>
 
-<!-- BACKGROUND LOGO -->
 <img src="images/favicon.png" id="bgLogo">
 
 <div class="content">
@@ -141,18 +136,20 @@ img {
 <p id="hint"></p>
 <div id="message"></div>
 
-<!-- 🔽 Bouton reveal (ajout) -->
 <div id="revealHintBox" style="display:none; margin-top:15px;">
   <button onclick="revealHint()">🔍 Reveal next location</button>
+  <!-- 🔽 TEXTE EXPLICATIF -->
+  <p id="locationInfo" style="font-size:12px; color:#cbd5f5;"></p>
   <p id="revealedHint" style="margin-top:10px; color:#fbbf24;"></p>
 </div>
 
 <div class="hint-buttons">
-  <button onclick="showHint(1)">Hint 1</button>
-  <button onclick="showHint(2)">Hint 2</button>
-  <button onclick="showHint(3)">Hint 3</button>
+  <button id="hintBtn1" onclick="showHint(1)"></button>
+  <button id="hintBtn2" onclick="showHint(2)"></button>
+  <button id="hintBtn3" onclick="showHint(3)"></button>
 </div>
 
+<!-- (RESTE INCHANGÉ) -->
 <div id="step1" class="card">
   <h2 id="step1Title">📍 Step 1</h2>
   <p id="step1Coords">48.8584, 2.2945</p>
@@ -184,75 +181,67 @@ img {
 </div>
 
 <script>
-// DATA (inchangé + ajout locationHints)
 const data = {
-  en:{ hint:"Enter the code with only the first letter capitalized. The answer must be written in English.",
+  en:{
+    hint:"Enter the code with only the first letter capitalized. The answer must be written in English. The word must be written in full. The second code contains two words.",
+    hintLabels:{1:"Hint for riddle 1",2:"Hint for riddle 2",3:"Hint for riddle 3"},
+    locationInfo:"Use this hint if you are having trouble finding the next cache.",
     hints:{1:"🍈 It's a fruit with green flesh",2:"🦈 It's on a shark",3:"🌊 Coral ecosystem"},
-    locationHints:{
-      1:"📦 The next cache is under a flat rock near a big tree",
-      2:"📦 Look inside something metallic near water",
-      3:"🏁 The treasure is under a wooden bench"
-    },
+    locationHints:{1:"📦 The next cache is under a flat rock near a big tree",2:"📦 Look inside something metallic near water",3:"🏁 The treasure is under a wooden bench"},
     messages:{wrong:"❌ Wrong code",step1:"Step 1 unlocked!",step2:"Step 2 unlocked!",step3:"🏆 You finished!"}
   },
 
-  fr:{ hint:"Entrez le code avec seulement la première lettre en majuscule. La réponse doit être écrite en anglais.",
+  fr:{
+    hint:"Entrez le code avec seulement la première lettre en majuscule. La réponse doit être écrite en anglais. Le mot doit être écrit en entier. Le deuxième code contient deux mots.",
+    hintLabels:{1:"Indice pour énigme 1",2:"Indice pour énigme 2",3:"Indice pour énigme 3"},
+    locationInfo:"Utilisez cet indice si vous avez des difficultés à trouver la prochaine cache.",
     hints:{1:"🍈 C'est un fruit vert",2:"🦈 Partie d’un requin",3:"🌊 Écosystème marin"},
-    locationHints:{
-      1:"📦 La prochaine cache est sous une pierre plate près d’un grand arbre",
-      2:"📦 Cherchez dans quelque chose de métallique près de l’eau",
-      3:"🏁 Le trésor est sous un banc en bois"
-    },
+    locationHints:{1:"📦 La prochaine cache est sous une pierre plate près d’un grand arbre",2:"📦 Cherchez dans quelque chose de métallique près de l’eau",3:"🏁 Le trésor est sous un banc en bois"},
     messages:{wrong:"❌ Mauvais code",step1:"Étape 1 débloquée!",step2:"Étape 2 débloquée!",step3:"🏆 Terminé!"}
   },
 
-  es:{ hint:"Introduce el código con solo la primera letra en mayúscula. La respuesta debe estar en inglés.",
+  es:{
+    hint:"Introduce el código con solo la primera letra en mayúscula. La respuesta debe estar en inglés. La palabra debe escribirse completa. El segundo código contiene dos palabras.",
+    hintLabels:{1:"Pista para acertijo 1",2:"Pista para acertijo 2",3:"Pista para acertijo 3"},
+    locationInfo:"Usa esta pista si tienes dificultades para encontrar la siguiente cache.",
     hints:{1:"🍈 Fruta verde",2:"🦈 Parte del tiburón",3:"🌊 Ecosistema marino"},
-    locationHints:{
-      1:"📦 La próxima pista está bajo una piedra plana cerca de un árbol",
-      2:"📦 Busca dentro de algo metálico cerca del agua",
-      3:"🏁 El tesoro está bajo un banco de madera"
-    },
+    locationHints:{1:"📦 La próxima pista está bajo una piedra plana cerca de un árbol",2:"📦 Busca dentro de algo metálico cerca del agua",3:"🏁 El tesoro está bajo un banco de madera"},
     messages:{wrong:"❌ Código incorrecto",step1:"Paso 1 desbloqueado!",step2:"Paso 2 desbloqueado!",step3:"🏆 Terminado!"}
   },
 
-  hr:{ hint:"Unesite kod s samo prvim velikim slovom. Odgovor mora biti napisan na engleskom.",
+  hr:{
+    hint:"Unesite kod s samo prvim velikim slovom. Odgovor mora biti napisan na engleskom. Riječ mora biti napisana u cijelosti. Drugi kod ima dvije riječi.",
+    hintLabels:{1:"Savjet za zagonetku 1",2:"Savjet za zagonetku 2",3:"Savjet za zagonetku 3"},
+    locationInfo:"Koristite ovaj savjet ako imate poteškoća pronaći sljedeću lokaciju.",
     hints:{1:"🍈 Zeleno voće",2:"🦈 Dio morskog psa",3:"🌊 Morski ekosistem"},
-    locationHints:{
-      1:"📦 Sljedeća lokacija je ispod ravnog kamena blizu velikog stabla",
-      2:"📦 Pogledajte u nešto metalno blizu vode",
-      3:"🏁 Blago je ispod drvene klupe"
-    },
+    locationHints:{1:"📦 Sljedeća lokacija je ispod ravnog kamena blizu velikog stabla",2:"📦 Pogledajte u nešto metalno blizu vode",3:"🏁 Blago je ispod drvene klupe"},
     messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Završeno!"}
   },
 
-  me:{ hint:"Unesite kod samo s prvim velikim slovom. Odgovor mora biti na engleskom.",
+  me:{
+    hint:"Unesite kod samo s prvim velikim slovom. Odgovor mora biti na engleskom. Riječ mora biti napisana u cjelosti. Drugi kod ima dvije riječi.",
+    hintLabels:{1:"Savjet za zagonetku 1",2:"Savjet za zagonetku 2",3:"Savjet za zagonetku 3"},
+    locationInfo:"Koristite ovaj savjet ako imate poteškoća da pronađete sljedeću lokaciju.",
     hints:{1:"🍈 Zeleno voće",2:"🦈 Dio ajkule",3:"🌊 Morski ekosistem"},
-    locationHints:{
-      1:"📦 Sljedeća lokacija je ispod ravnog kamena blizu velikog drveta",
-      2:"📦 Pogledajte u nešto metalno blizu vode",
-      3:"🏁 Blago je ispod drvene klupe"
-    },
+    locationHints:{1:"📦 Sljedeća lokacija je ispod ravnog kamena blizu velikog drveta",2:"📦 Pogledajte u nešto metalno blizu vode",3:"🏁 Blago je ispod drvene klupe"},
     messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Završeno!"}
   },
 
-  de:{ hint:"Geben Sie den Code mit nur dem ersten Großbuchstaben ein. Die Antwort muss auf Englisch sein.",
+  de:{
+    hint:"Geben Sie den Code mit nur dem ersten Großbuchstaben ein. Die Antwort muss auf Englisch sein. Das Wort muss vollständig geschrieben werden. Der zweite Code besteht aus zwei Wörtern.",
+    hintLabels:{1:"Hinweis für Rätsel 1",2:"Hinweis für Rätsel 2",3:"Hinweis für Rätsel 3"},
+    locationInfo:"Verwenden Sie diesen Hinweis, wenn Sie Schwierigkeiten haben, das nächste Versteck zu finden.",
     hints:{1:"🍈 Grünes Obst",2:"🦈 Teil eines Hais",3:"🌊 Meeresökosystem"},
-    locationHints:{
-      1:"📦 Der nächste Hinweis liegt unter einem flachen Stein neben einem großen Baum",
-      2:"📦 Schau in etwas Metallisches nahe am Wasser",
-      3:"🏁 Der Schatz liegt unter einer Holzbank"
-    },
+    locationHints:{1:"📦 Der nächste Hinweis liegt unter einem flachen Stein neben einem großen Baum",2:"📦 Schau in etwas Metallisches nahe am Wasser",3:"🏁 Der Schatz liegt unter einer Holzbank"},
     messages:{wrong:"❌ Falscher Code",step1:"Schritt 1 freigeschaltet!",step2:"Schritt 2 freigeschaltet!",step3:"🏆 Fertig!"}
   },
 
-  nl:{ hint:"Voer de code in met alleen de eerste letter als hoofdletter. Het antwoord moet in het Engels zijn.",
+  nl:{
+    hint:"Voer de code in met alleen de eerste letter als hoofdletter. Het antwoord moet in het Engels zijn. Het woord moet volledig geschreven worden. De tweede code bestaat uit twee woorden.",
+    hintLabels:{1:"Hint voor raadsel 1",2:"Hint voor raadsel 2",3:"Hint voor raadsel 3"},
+    locationInfo:"Gebruik deze hint als je moeite hebt om de volgende locatie te vinden.",
     hints:{1:"🍈 Groene vrucht",2:"🦈 Onderdeel van een haai",3:"🌊 Zee-ecosysteem"},
-    locationHints:{
-      1:"📦 De volgende locatie is onder een platte steen bij een grote boom",
-      2:"📦 Kijk in iets van metaal bij water",
-      3:"🏁 De schat ligt onder een houten bank"
-    },
+    locationHints:{1:"📦 De volgende locatie is onder een platte steen bij een grote boom",2:"📦 Kijk in iets van metaal bij water",3:"🏁 De schat ligt onder een houten bank"},
     messages:{wrong:"❌ Verkeerde code",step1:"Stap 1 ontgrendeld!",step2:"Stap 2 ontgrendeld!",step3:"🏆 Klaar!"}
   }
 };
@@ -272,6 +261,10 @@ document.querySelectorAll(".lang-buttons button").forEach(btn=>{
 
 function updateLang(){
   document.getElementById("hint").innerText = data[currentLang].hint;
+  document.getElementById("hintBtn1").innerText = data[currentLang].hintLabels[1];
+  document.getElementById("hintBtn2").innerText = data[currentLang].hintLabels[2];
+  document.getElementById("hintBtn3").innerText = data[currentLang].hintLabels[3];
+  document.getElementById("locationInfo").innerText = data[currentLang].locationInfo;
 }
 
 function showHint(step){

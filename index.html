@@ -8,7 +8,6 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 
 <style>
-/* (RIEN CHANGÉ ICI) */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -117,6 +116,34 @@ img {
 .hint-buttons button {
   background: #fbbf24;
 }
+
+/* AJOUT PHOTOS AUTOUR */
+.final-container {
+  position: relative;
+  width: 260px;
+  margin: 20px auto;
+}
+
+.final-container .main {
+  width: 100%;
+  border-radius: 15px;
+}
+
+.final-container .side {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.top-left { top: -30px; left: -30px; }
+.top-right { top: -30px; right: -30px; }
+.middle-left { top: 50%; left: -40px; transform: translateY(-50%); }
+.middle-right { top: 50%; right: -40px; transform: translateY(-50%); }
+.bottom-left { bottom: -30px; left: -30px; }
+.bottom-right { bottom: -30px; right: -30px; }
+
 </style>
 </head>
 
@@ -138,7 +165,6 @@ img {
 
 <div id="revealHintBox" style="display:none; margin-top:15px;">
   <button onclick="revealHint()">🔍 Reveal next location</button>
-  <!-- 🔽 TEXTE EXPLICATIF -->
   <p id="locationInfo" style="font-size:12px; color:#cbd5f5;"></p>
   <p id="revealedHint" style="margin-top:10px; color:#fbbf24;"></p>
 </div>
@@ -149,7 +175,6 @@ img {
   <button id="hintBtn3" onclick="showHint(3)"></button>
 </div>
 
-<!-- (RESTE INCHANGÉ) -->
 <div id="step1" class="card">
   <h2 id="step1Title">📍 Step 1</h2>
   <p id="step1Coords">48.8584, 2.2945</p>
@@ -165,7 +190,17 @@ img {
 <div id="step3" class="card">
   <h2 id="step3Title">🏁 Final Step</h2>
   <div id="step3Congrats"></div>
-  <img id="mapImage3" src="images/step3-map.jpg">
+
+  <div class="final-container">
+    <img src="images/final.gif" class="main">
+    <img src="images/photo1.jpg" class="side top-left">
+    <img src="images/photo2.jpg" class="side top-right">
+    <img src="images/photo3.jpg" class="side middle-left">
+    <img src="images/photo4.jpg" class="side middle-right">
+    <img src="images/photo5.jpg" class="side bottom-left">
+    <img src="images/photo6.jpg" class="side bottom-right">
+  </div>
+
 </div>
 
 <div class="lang-buttons">
@@ -179,6 +214,7 @@ img {
 </div>
 
 </div>
+
 <footer style="margin-top:40px; font-size:12px; color:#94a3b8;">
   <p id="footerText"></p>
   <p>
@@ -188,7 +224,39 @@ img {
     </a>
   </p>
 </footer>
+
 <script>
+
+/* 🎉 CONFETTI */
+function launchConfetti(){
+  for(let i=0;i<80;i++){
+    let confetti = document.createElement("div");
+    confetti.style.position = "fixed";
+    confetti.style.width = "6px";
+    confetti.style.height = "6px";
+    confetti.style.backgroundColor = "hsl(" + Math.random()*360 + ",100%,50%)";
+    confetti.style.top = "-10px";
+    confetti.style.left = Math.random()*100 + "vw";
+    confetti.style.zIndex = "9999";
+
+    document.body.appendChild(confetti);
+
+    let duration = Math.random()*3 + 2;
+
+    confetti.animate([
+      { transform: "translateY(0px)" },
+      { transform: "translateY(100vh)" }
+    ],{
+      duration: duration*1000,
+      easing: "linear"
+    });
+
+    setTimeout(()=> confetti.remove(), duration*1000);
+  }
+}
+
+/* TON SCRIPT ORIGINAL (INCHANGÉ) */
+
 const data = {
   en:{
     hint:"Enter the code with only the first letter capitalized. The answer must be written in English. The word must be written in full. The second code contains two words.",
@@ -314,6 +382,7 @@ document.getElementById("submitBtn").onclick = () => {
     msg.innerHTML = "<div class='success'>"+data[currentLang].messages.step2+"</div>";
   }
   else if(code === "Reef"){
+    launchConfetti();
     currentStep = 3;
     document.getElementById("step3").style.display = "block";
     document.getElementById("step3Congrats").innerText = data[currentLang].messages.step3;

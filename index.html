@@ -117,7 +117,7 @@ img {
   background: #fbbf24;
 }
 
-/* AJOUT PHOTOS AUTOUR */
+/* PHOTOS AUTOUR */
 .final-container {
   position: relative;
   width: 260px;
@@ -137,12 +137,12 @@ img {
   object-fit: cover;
 }
 
-.top-left { top: -30px; left: -30px; }
-.top-right { top: -30px; right: -30px; }
-.middle-left { top: 50%; left: -40px; transform: translateY(-50%); }
-.middle-right { top: 50%; right: -40px; transform: translateY(-50%); }
-.bottom-left { bottom: -30px; left: -30px; }
-.bottom-right { bottom: -30px; right: -30px; }
+.top-left { top: -60px; left: -60px; }
+.top-right { top: -60px; right: -60px; }
+.middle-left { top: 50%; left: -80px; transform: translateY(-50%); }
+.middle-right { top: 50%; right: -80px; transform: translateY(-50%); }
+.bottom-left { bottom: -60px; left: -60px; }
+.bottom-right { bottom: -60px; right: -60px; }
 
 </style>
 </head>
@@ -200,7 +200,6 @@ img {
     <img src="images/photo5.jpg" class="side bottom-left">
     <img src="images/photo6.jpg" class="side bottom-right">
   </div>
-
 </div>
 
 <div class="lang-buttons">
@@ -227,7 +226,7 @@ img {
 
 <script>
 
-/* 🎉 CONFETTI */
+/* CONFETTI */
 function launchConfetti(){
   for(let i=0;i<80;i++){
     let confetti = document.createElement("div");
@@ -255,7 +254,14 @@ function launchConfetti(){
   }
 }
 
-/* TON SCRIPT ORIGINAL (INCHANGÉ) */
+/* AJOUT */
+function hideAllSteps(){
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("step2").style.display = "none";
+  document.getElementById("step3").style.display = "none";
+}
+
+/* TON SCRIPT CONTINUE (inchangé) */
 
 const data = {
   en:{
@@ -264,67 +270,95 @@ const data = {
     locationInfo:"⬆️ Use this hint if you are having trouble finding the next cache.",
     footer:"This treasure hunt is part of the activities of Montenegro Dolphin Research.",
     hints:{1:"🍈 It's a fruit with green flesh",2:"🦈 It's on a shark",3:"🌊 Coral ecosystem"},
-    locationHints:{1:"📦 The next cache is under a flat rock near a big tree",2:"📦 Look inside something metallic near water",3:"🏁 The treasure is under a wooden bench"},
+    locationHints:{
+      1:"📦 The next cache is under a flat rock near a big tree",
+      2:"📦 Look inside something metallic near water",
+      3:"🏁 The treasure is under a wooden bench"
+    },
     messages:{wrong:"❌ Wrong code",step1:"Step 1 unlocked!",step2:"Step 2 unlocked!",step3:"🏆 You finished!"}
   },
 
   fr:{
     hint:"Entrez le code avec seulement la première lettre en majuscule. La réponse doit être écrite en anglais. Le mot doit être écrit en entier. Le deuxième code contient deux mots.",
     hintLabels:{1:"Indice pour énigme 1",2:"Indice pour énigme 2",3:"Indice pour énigme 3"},
-    locationInfo:"⬆️Utilisez cet indice si vous avez des difficultés à trouver la prochaine cache.",
+    locationInfo:"⬆️ Utilisez cet indice si vous avez des difficultés à trouver la prochaine cache.",
     footer:"Cette chasse au trésor fait partie des activités de Montenegro Dolphin Research.",
     hints:{1:"🍈 C'est un fruit vert",2:"🦈 Partie d’un requin",3:"🌊 Écosystème marin"},
-    locationHints:{1:"📦 La prochaine cache est sous une pierre plate près d’un grand arbre",2:"📦 Cherchez dans quelque chose de métallique près de l’eau",3:"🏁 Le trésor est sous un banc en bois"},
+    locationHints:{
+      1:"📦 La prochaine cache est sous une pierre plate près d’un grand arbre",
+      2:"📦 Cherchez dans quelque chose de métallique près de l’eau",
+      3:"🏁 Le trésor est sous un banc en bois"
+    },
     messages:{wrong:"❌ Mauvais code",step1:"Étape 1 débloquée!",step2:"Étape 2 débloquée!",step3:"🏆 Terminé!"}
   },
 
   es:{
     hint:"Introduce el código con solo la primera letra en mayúscula. La respuesta debe estar en inglés. La palabra debe escribirse completa. El segundo código contiene dos palabras.",
     hintLabels:{1:"Pista para acertijo 1",2:"Pista para acertijo 2",3:"Pista para acertijo 3"},
-    locationInfo:"⬆️Usa esta pista si tienes dificultades para encontrar la siguiente cache.",
+    locationInfo:"⬆️ Usa esta pista si tienes dificultades para encontrar la siguiente cache.",
     footer:"Esta búsqueda del tesoro forma parte de las actividades de Montenegro Dolphin Research.",
     hints:{1:"🍈 Fruta verde",2:"🦈 Parte del tiburón",3:"🌊 Ecosistema marino"},
-    locationHints:{1:"📦 La próxima pista está bajo una piedra plana cerca de un árbol",2:"📦 Busca dentro de algo metálico cerca del agua",3:"🏁 El tesoro está bajo un banco de madera"},
+    locationHints:{
+      1:"📦 La próxima pista está bajo una piedra plana cerca de un árbol",
+      2:"📦 Busca dentro de algo metálico cerca del agua",
+      3:"🏁 El tesoro está bajo un banco de madera"
+    },
     messages:{wrong:"❌ Código incorrecto",step1:"Paso 1 desbloqueado!",step2:"Paso 2 desbloqueado!",step3:"🏆 Terminado!"}
   },
 
   hr:{
     hint:"Unesite kod s samo prvim velikim slovom. Odgovor mora biti napisan na engleskom. Riječ mora biti napisana u cijelosti. Drugi kod ima dvije riječi.",
     hintLabels:{1:"Savjet za zagonetku 1",2:"Savjet za zagonetku 2",3:"Savjet za zagonetku 3"},
-    locationInfo:"⬆️Koristite ovaj savjet ako imate poteškoća pronaći sljedeću lokaciju.",
+    locationInfo:"⬆️ Koristite ovaj savjet ako imate poteškoća pronaći sljedeću lokaciju.",
     footer:"Ova potraga za blagom dio je aktivnosti Montenegro Dolphin Research.",
     hints:{1:"🍈 Zeleno voće",2:"🦈 Dio morskog psa",3:"🌊 Morski ekosistem"},
-    locationHints:{1:"📦 Sljedeća lokacija je ispod ravnog kamena blizu velikog stabla",2:"📦 Pogledajte u nešto metalno blizu vode",3:"🏁 Blago je ispod drvene klupe"},
+    locationHints:{
+      1:"📦 Sljedeća lokacija je ispod ravnog kamena blizu velikog stabla",
+      2:"📦 Pogledajte u nešto metalno blizu vode",
+      3:"🏁 Blago je ispod drvene klupe"
+    },
     messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Završeno!"}
   },
 
   me:{
     hint:"Unesite kod samo s prvim velikim slovom. Odgovor mora biti na engleskom. Riječ mora biti napisana u cjelosti. Drugi kod ima dvije riječi.",
     hintLabels:{1:"Savjet za zagonetku 1",2:"Savjet za zagonetku 2",3:"Savjet za zagonetku 3"},
-    locationInfo:"⬆️Koristite ovaj savjet ako imate poteškoća da pronađete sljedeću lokaciju.",
+    locationInfo:"⬆️ Koristite ovaj savjet ako imate poteškoća da pronađete sljedeću lokaciju.",
     footer:"Ova potraga za blagom dio je aktivnosti Montenegro Dolphin Research.",
     hints:{1:"🍈 Zeleno voće",2:"🦈 Dio ajkule",3:"🌊 Morski ekosistem"},
-    locationHints:{1:"📦 Sljedeća lokacija je ispod ravnog kamena blizu velikog drveta",2:"📦 Pogledajte u nešto metalno blizu vode",3:"🏁 Blago je ispod drvene klupe"},
+    locationHints:{
+      1:"📦 Sljedeća lokacija je ispod ravnog kamena blizu velikog drveta",
+      2:"📦 Pogledajte u nešto metalno blizu vode",
+      3:"🏁 Blago je ispod drvene klupe"
+    },
     messages:{wrong:"❌ Pogrešan kod",step1:"Korak 1 otključan!",step2:"Korak 2 otključan!",step3:"🏆 Završeno!"}
   },
 
   de:{
     hint:"Geben Sie den Code mit nur dem ersten Großbuchstaben ein. Die Antwort muss auf Englisch sein. Das Wort muss vollständig geschrieben werden. Der zweite Code besteht aus zwei Wörtern.",
     hintLabels:{1:"Hinweis für Rätsel 1",2:"Hinweis für Rätsel 2",3:"Hinweis für Rätsel 3"},
-    locationInfo:"⬆️Verwenden Sie diesen Hinweis, wenn Sie Schwierigkeiten haben, das nächste Versteck zu finden.",
+    locationInfo:"⬆️ Verwenden Sie diesen Hinweis, wenn Sie Schwierigkeiten haben, das nächste Versteck zu finden.",
     footer:"Diese Schatzsuche ist Teil der Aktivitäten von Montenegro Dolphin Research.",
     hints:{1:"🍈 Grünes Obst",2:"🦈 Teil eines Hais",3:"🌊 Meeresökosystem"},
-    locationHints:{1:"📦 Der nächste Hinweis liegt unter einem flachen Stein neben einem großen Baum",2:"📦 Schau in etwas Metallisches nahe am Wasser",3:"🏁 Der Schatz liegt unter einer Holzbank"},
+    locationHints:{
+      1:"📦 Der nächste Hinweis liegt unter einem flachen Stein neben einem großen Baum",
+      2:"📦 Schau in etwas Metallisches nahe am Wasser",
+      3:"🏁 Der Schatz liegt unter einer Holzbank"
+    },
     messages:{wrong:"❌ Falscher Code",step1:"Schritt 1 freigeschaltet!",step2:"Schritt 2 freigeschaltet!",step3:"🏆 Fertig!"}
   },
 
   nl:{
     hint:"Voer de code in met alleen de eerste letter als hoofdletter. Het antwoord moet in het Engels zijn. Het woord moet volledig geschreven worden. De tweede code bestaat uit twee woorden.",
     hintLabels:{1:"Hint voor raadsel 1",2:"Hint voor raadsel 2",3:"Hint voor raadsel 3"},
-    locationInfo:"⬆️Gebruik deze hint als je moeite hebt om de volgende locatie te vinden.",
+    locationInfo:"⬆️ Gebruik deze hint als je moeite hebt om de volgende locatie te vinden.",
     footer:"Deze schattenjacht maakt deel uit van de activiteiten van Montenegro Dolphin Research.",
     hints:{1:"🍈 Groene vrucht",2:"🦈 Onderdeel van een haai",3:"🌊 Zee-ecosysteem"},
-    locationHints:{1:"📦 De volgende locatie is onder een platte steen bij een grote boom",2:"📦 Kijk in iets van metaal bij water",3:"🏁 De schat ligt onder een houten bank"},
+    locationHints:{
+      1:"📦 De volgende locatie is onder een platte steen bij een grote boom",
+      2:"📦 Kijk in iets van metaal bij water",
+      3:"🏁 De schat ligt onder een houten bank"
+    },
     messages:{wrong:"❌ Verkeerde code",step1:"Stap 1 ontgrendeld!",step2:"Stap 2 ontgrendeld!",step3:"🏆 Klaar!"}
   }
 };
@@ -365,6 +399,8 @@ function revealHint(){
 document.getElementById("submitBtn").onclick = () => {
   const code = document.getElementById("codeInput").value.trim();
   const msg = document.getElementById("message");
+
+  hideAllSteps(); // 👈 AJOUT
 
   document.getElementById("revealHintBox").style.display = "none";
   document.getElementById("revealedHint").innerText = "";
